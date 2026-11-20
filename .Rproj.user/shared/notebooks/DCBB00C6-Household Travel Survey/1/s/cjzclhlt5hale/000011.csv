@@ -1,0 +1,6 @@
+"0","hh |> "
+"0","  filter(INCOME<98) |> "
+"0","  ggplot(aes(x=INCOME)) + "
+"0","  geom_histogram(bins=15, fill='darkseagreen') + "
+"0","  theme_minimal(base_family='jakarta') + "
+"0","  labs(x='Income', y='Count', title='Histogram of Income')"

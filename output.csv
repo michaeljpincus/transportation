@@ -1,0 +1,419 @@
+"Field Name","Field Description","Values","Notes/Comments","Data Source","Type","Field Type"
+"HH_ID","Household ID","Up to 7 digits",NA,"Sample","Sample","Number (Double)"
+"PERSON_NUM","Person ID","2-digit numeric",NA,"Recruitment","Assigned","Number (Double)"
+"PERSON_ID","Household Person ID","Up to 9 digits (HH_ID + PERSON_NUM)",NA,"Recruitment","Assigned","Number (Double)"
+"HH_WEIGHT","Weight of HH that person is part of","Numeric",NA,"Calculated","Calculated","Number (Double)"
+"P_WEIGHT","Person weight","Numeric",NA,"Calculated","Calculated","Number (Double)"
+"P_TOT_TRIPS","Number of trips made by person","Numeric",NA,"Retrieval","Calculated","Number (Double)"
+"P_MO_TRIPS","Number of motorized trips made by person","Numeric","The number of cases per person with MODE = 5-13, 18, or 29","Retrieval","Calculated","Number (Double)"
+"P_NM_TRIPS","Number of non-motorized trips made by person","Numeric","The number of cases per person with MODE = 1-4, 14-17, 19-28, or 30","Retrieval","Calculated","Number (Double)"
+"GPS_FACTOR","Multiplier used to correct for trip under-reporting in diary sample","Numeric",NA,"Calculated","Calculated","Number (Double)"
+"F_P_TOT_TRIPS","Corrected total number of person trips","Numeric","Calculated by multiplying GPS_FACTOR by P_TOT_TRIPS","Calculated","Calculated","Number (Double)"
+"F_P_MO_TRIPS","Corrected number of person motorized trips","Numeric","Calculated by multiplying GPS_FACTOR by P_MO_TRIPS","Calculated","Calculated","Number (Double)"
+"F_P_NM_TRIPS","Corrected number of person non-motorized trips","Numeric","Calculated by multiplying GPS_FACTOR by P_NM_TRIPS","Calculated","Calculated","Number (Double)"
+"GEND","Gender of Person","1 Male 
+2 Female 
+99 Refused",NA,"Recruitment","Survey Response","Number (Double)"
+"AGECAT","Collapsed Age Categories","1 5 or younger
+2 6 to 12
+3 13 to 15
+4 16 to 17
+5 18 to 24
+6 25 to 34
+7 35 to 44
+8 45 to 54
+9 55 to 64
+10 65 to 74
+11 75 to 85
+12 86 and over 
+98 Don't know
+99 Refused",NA,"Recruitment","Calculated","Number (Double)"
+"RACE","Race or Ethnicity","1 White/Caucasian
+2 Black/African American
+3 Hispanic or Latino
+4 American Indian or Alaska Native
+5 Asian
+6 Native Hawaiian or Pacific Islander (Guamanian, Samoan, Fijian)
+97 Other, Specify
+98 Don't Know
+99 Refused
+Re-codes
+100 Multi-race
+988 Pilot Record (Non-Hispanic)","ONLY ASKED IN MAIN STUDY;
+IF PILOT HH PERSON INDICATED 'YES' AS HISPANIC / LATINO ORIGIN, CODED AS '3' FOR RACE.","Recruitment","Survey Response","Number (Double)"
+"EDUCA","Highest Level of Education Completed","1 Not a high school graduate, 12 grade or less
+2 High school graduate
+3 Some college credit but no degree
+4 Associate or technical school degree
+5 Bachelor’s or undergraduate degree
+6 Graduate degree
+97 Other
+98 Don’t know
+99 Refused","OTHER","Recruitment","Survey Response","Number (Double)"
+"RELAT","Relationship to contact person","0 Contact person
+1 Spouse/Partner 
+2  Child/Daughter/Son/Adopted Child/Stepchild/Son-In-Law/Daughter-In-Law 
+3 Parent/Parent-In-Law/Step-Parent 
+4 Brother Or Sister (Stepbrother/Stepsister) 
+5  Grandparent 
+6 Grandchild 
+7 Other relative
+8 No Relation/Housemate/Roommate/Foster Child
+99 Refused",NA,"Recruitment","Survey Response","Number (Double)"
+"LIC","Driver License Status (age 16+)","1 Yes 
+2 No 
+98 Don't know 
+99 Refused",NA,"Recruitment","Survey Response","Number (Double)"
+"WORK INFORMATION",NA,NA,NA,NA,NA,NA
+"EMPLY","Employment Status (age 16+)","1 Yes 
+2 No 
+98 Don't know 
+99 Refused",NA,"Recruitment","Survey Response","Number (Double)"
+"WK_STAT","Work Status","1 Retired
+2 Disabled/on disability status
+3 Homemaker
+4 Unemployed but looking for work
+5 Unemployed and not looking for work, or
+6 Student
+7 Volunteer
+97 Other
+98 Don't know
+99 Refused","[IF EMPLY = 2]","Recruitment","Survey Response","Number (Double)"
+"SEMPLY","Self-Employment Status","1 Yes 
+2 No 
+98 Don't know 
+99 Refused","[IF EMPLY=1]","Recruitment","Survey Response","Number (Double)"
+"JOBS","Number of Jobs","RECORD NUMBER
+98 Don't know 
+99 Refused","[IF EMPLY=1]; Range 1-5","Recruitment","Survey Response","Number (Double)"
+"WK_LOC","Work Location","1 Fixed
+2 Home
+3 No fixed workplace, varies (e.g. construction)
+8 Don't know
+9 Refused","[IF EMPLY=1]","Recruitment","Survey Response","Number (Double)"
+"W_GEO_ACC","Accuracy of Work Location","1  Match
+2  Cross Street
+3  Street Centroid
+4  City or Zipcode Centroid
+5  State (out of region)
+99  Not Geocodable",NA,"Calculated","Calculated","Number (Double)"
+"W_State","State of work locaiton based on coordinates","34 New Jersey
+42 Pennsylvania",NA,"Calculated","Calculated","Number (Double)"
+"W_Region","Region of work locaiton based on coordinates","1  DVRPC Region
+2  Extended Region
+3  Out of Region
+",NA,"Calculated","Calculated","Number (Double)"
+"W_County","County of work locaiton based on coordinates","42017  Bucks
+42029  Chester
+42045  Delaware
+42091  Montgomery
+42101  Philadelphia
+34005  Burlington
+34007  Camden
+34015  Gloucester
+34021  Mercer",NA,"Calculated","Calculated","Number (Double)"
+"W_CPA","County Planning Area of work locaiton based on coordinates","Numeric",NA,"Calculated","Calculated","Text"
+"W_Tract","Census Tract of work locaiton based on coordinates","Numeric",NA,"Calculated","Calculated","Number (Double)"
+"W_TAZ","Transportaiton Analysis Zone of work locaiton based on coordinates","Numeric",NA,"Calculated","Calculated","Number (Double)"
+"HOURS","Hours Worked Weekly","ENTER NUMBER
+998=DON'T KNOW 
+999=REFUSED","Range is 1-150","Recruitment","Survey Response","Number (Double)"
+"OCCUP","Occupational Code","11 Management Occupations
+13 Business And Financial Operations Occupations
+15 Computer And Mathematical Occupations
+17 Architecture And Engineering Occupations
+19 Life, Physical And Social Science Occupations
+21 Community and Social Service Occupations
+23 Legal Occupations
+25 Education, Training And Library Occupations
+27 Arts, Design, Entertainment, Sports and Media occupations
+29 Healthcare Practitioners And Technical Occupations
+31 Healthcare Support Occupations
+33 Protective Service Occupations
+35 Food Preparation And Serving Related Occupations
+37 Building And Grounds Cleaning And Maintenance Occupations
+39 Personal Care And Service Occupations
+41 Sales And Related Occupations
+43 Office And Administrative Support Occupations
+45 Farming, Fishing, and Forestry occupations
+47 Construction And Extraction Occupations
+49 Installation, Maintenance, And Repair Occupations
+51 Production Occupations
+53 Transportation And Material Moving Occupations
+55 Military specific occupations
+97 Other
+98 Don't know
+99 Refused",NA,"Recruitment","Survey Response","Number (Double)"
+"WK_MODE","Mode of Transportation to Work","1 Car, driving alone
+2 Car, sharing a ride with others
+3 Transit using park and ride
+4 Transit NOT using park and ride
+5 Bicycle
+6 Walking the entire way
+7 Other
+8 Worked from Home
+9 Refused",NA,"Retrieval","Survey Response","Number (Double)"
+"WK_MODETMS","Frequency of Using Work Mode of Transporation (Last 10 Times)","ENTER NUMBER
+98 Don't know
+99 Refused","[IF WK_MODE NOT EQUAL 7] ; Range 0-10","Retrieval","Survey Response","Number (Double)"
+"ARRV_WRK","Usual Arrival Time at Work","1 Before 6 am
+2 Between 6 and 6:30 am
+3 Between 6:30 and 7 am
+4 Between 7 and 7:30 am
+5 Between 7:30 and 8 am
+6 Between 8 and 8:30 am
+7 Between 8:30 and 9 am
+8 After 9 am  
+9 Different times on different days",NA,"Retrieval","Survey Response","Number (Double)"
+"ARRV_TMS","Frequency of Arrival Time at Work (Last 10 Times)","ENTER NUMBER
+98 Don't know
+99 Refused","[IF ARRV_WRK NOT EQUAL 9] ; Range 0-10","Retrieval","Survey Response","Number (Double)"
+"LV_WRK","Usual Departure Time From Work","1 Before 3:30 pm
+2 Between 3:30 and 4 pm
+3 Between 4 and 4:30 pm
+4 Between 4:30 and 5 pm
+5 Between 5 and 5:30 pm
+6 Between 5:30 and 6 pm
+7 Between 6 and 6:30 pm
+8 After 6:30 pm
+9 Different times on different days",NA,"Retrieval","Survey Response","Number (Double)"
+"LV_TMS","Frequency of Departure Time from Work (Last 10 Times)","ENTER NUMBER
+98 Don't know
+99 Refused","[IF LV_WRK NOT EQUAL 9] ; Range 0-10","Retrieval","Survey Response","Number (Double)"
+"TCOMM","Frequency of Telecommuting (in last 10 days worked)","ENTER NUMBER
+98 Don't know
+99 Refused","Range 0-10","Retrieval","Survey Response","Number (Double)"
+"PARK_SUB","Employer Parking Subsidy","1 Employer offers to subsidize/Pay for part of workplace parking
+2 Employee must pay for workplace parking out-of-pocket
+3 Free parking available for employees
+8 Don't know
+9 Refused",NA,"Retrieval","Survey Response","Number (Double)"
+"PARK_SUB_AMT","Percentage of Employer Parking Subsidy","1 1% to 24%
+2 25% to 49%
+3 50% to 74%
+4 75% to 99%
+5 100%
+7 Employer does not provide subsidy
+8 Don't know
+9 Refused","[IF PARK_SUB = 1]","Retrieval","Survey Response","Number (Double)"
+"TRAN_SUB","Employer Transit Subsidy","1 Employer offers to subsidize/Pay for part of transit fare
+2 Employee must pay for transit fare out-of-pocket
+8 Don't know
+9 Refused",NA,"Retrieval","Survey Response","Number (Double)"
+"TRAN_SUB_AMT","Percentage of Employer Transit Subsidy","1 1% to 24%
+2 25% to 49%
+3 50% to 74%
+4 75% to 99%
+5 100%
+7 Employer does not provide subsidy
+8 Don't know
+9 Refused","[IF TRAN_SUB = 1]","Retrieval","Survey Response","Number (Double)"
+"WDAY_1","Typical Days Worked","1 Monday
+2 Tuesday
+3 Wednesday
+4 Thursday
+5 Friday
+6 Saturday
+7 Sunday
+98 Don't know
+99 Refused","Multiple response","Recruitment","Survey Response","Number (Double)"
+"WDAY_2","Typical Days Worked","1 Monday
+2 Tuesday
+3 Wednesday
+4 Thursday
+5 Friday
+6 Saturday
+7 Sunday
+98 Don't know
+99 Refused","Multiple response","Recruitment","Survey Response","Number (Double)"
+"WDAY_3","Typical Days Worked","1 Monday
+2 Tuesday
+3 Wednesday
+4 Thursday
+5 Friday
+6 Saturday
+7 Sunday
+98 Don't know
+99 Refused","Multiple response","Recruitment","Survey Response","Number (Double)"
+"WDAY_4","Typical Days Worked","1 Monday
+2 Tuesday
+3 Wednesday
+4 Thursday
+5 Friday
+6 Saturday
+7 Sunday
+98 Don't know
+99 Refused","Multiple response","Recruitment","Survey Response","Number (Double)"
+"WDAY_5","Typical Days Worked","1 Monday
+2 Tuesday
+3 Wednesday
+4 Thursday
+5 Friday
+6 Saturday
+7 Sunday
+98 Don't know
+99 Refused","Multiple response","Recruitment","Survey Response","Number (Double)"
+"WDAY_6","Typical Days Worked","1 Monday
+2 Tuesday
+3 Wednesday
+4 Thursday
+5 Friday
+6 Saturday
+7 Sunday
+98 Don't know
+99 Refused","Multiple response","Recruitment","Survey Response","Number (Double)"
+"WDAY_7","Typical Days Worked","1 Monday
+2 Tuesday
+3 Wednesday
+4 Thursday
+5 Friday
+6 Saturday
+7 Sunday
+98 Don't know
+99 Refused","Multiple response","Recruitment","Survey Response","Number (Double)"
+"SCHOOL INFORMATION",NA,NA,NA,NA,NA,NA
+"STUDE","Student Status","1 Yes - Full time
+2 Yes - Part time 
+3 No
+98 Don't know 
+99 Refused",NA,"Recruitment","Survey Response","Number (Double)"
+"SCHOL","Current Level of School Enrollment","1 Daycare 
+2 Nursery School, Preschool 
+3 Kindergarten To Grade 8 
+4 Grade 9 To 12 
+5 Technical/Vocational School 
+6 2-Year College (Community College) 
+7 4-Year College Or University 
+8 Graduate School/Professional 
+97 Other 
+98 Don’t Know 
+99 Refused","[IF STUDE=1 or 2]","Recruitment","Survey Response","Number (Double)"
+"S_HOME","Home Schooled Status","1 Yes
+2 No
+98 Don't know
+99 Refused","[IF SCHOL=3 or 4]","Recruitment","Survey Response","Number (Double)"
+"S_ONLN","Online College Course Attendance Status","1 On campus only
+2 Online only
+3 Both campus and online
+8 Don't know 
+9 Refused","[IF SCHOL > 4]","Recruitment","Survey Response","Text"
+"S_GEO_ACC","Accuracy of School Locaiton","1  Match
+2  Cross Street
+3  Street Centroid
+4  City or Zipcode Centroid
+5  State (out of region)
+99  Not Geocodable",NA,"Calculated","Calculated","Number (Double)"
+"S_State","State of school locaiton based on coordinates","34 New Jersey
+42 Pennsylvania",NA,"Calculated","Calculated","Number (Double)"
+"S_Region","Region of school locaiton based on coordinates","1  DVRPC Region (9 counties)
+2  Extended Model Counties
+3  Beyond Extended Model Counties
+",NA,"Calculated","Calculated","Number (Double)"
+"S_County","County of school locaiton based on coordinates","42017  Bucks
+42029  Chester
+42045  Delaware
+42091  Montgomery
+42101  Philadelphia
+34005  Burlington
+34007  Camden
+34015  Gloucester
+34021  Mercer",NA,"Calculated","Calculated","Number (Double)"
+"S_CPA","County Planning Area of school locaiton based on coordinates","Numeric",NA,"Calculated","Calculated","Text"
+"S_Tract","Tract of school locaiton based on coordinates","Numeric",NA,"Calculated","Calculated","Number (Double)"
+"S_TAZ","Transporation Analysis Zone of school locaiton based on coordinates","Numeric",NA,"Calculated","Calculated","Number (Double)"
+"PRESCH_1","Preschool Type","1 Relative/Family member in your home
+2 Relative/Family member outside your home
+3 Non-relative/Friend in your home
+4 Non-relative/Friend outside your home
+5 Private daycare center/Preschool
+6 Public daycare center/Preschool
+97 Other
+98  Don't know
+99 Refused","[IF SCHOL=1 or 2]; Multiple Response","Recruitment","Survey Response","Number (Double)"
+"PRESCH_2","Preschool Type","1 Relative/Family member in your home
+2 Relative/Family member outside your home
+3 Non-relative/Friend in your home
+4 Non-relative/Friend outside your home
+5 Private daycare center/Preschool
+6 Public daycare center/Preschool
+97 Other
+98  Don't know
+99 Refused","[IF SCHOL=1 or 2]; Multiple Response","Recruitment","Survey Response","Number (Double)"
+"PRESCH_3","Preschool Type","1 Relative/Family member in your home
+2 Relative/Family member outside your home
+3 Non-relative/Friend in your home
+4 Non-relative/Friend outside your home
+5 Private daycare center/Preschool
+6 Public daycare center/Preschool
+97 Other
+98  Don't know
+99 Refused","[IF SCHOL=1 or 2]; Multiple Response","Recruitment","Survey Response","Number (Double)"
+"TRANSIT PAYMENT INFORMATION",NA,NA,NA,NA,NA,NA
+"T_TRIP","Number of One-way Public Transportation Trips (Last Week)","RANGE 0-50 trips
+997 50+ trips
+998 Don't know
+999 Refused","QUESTION ASKED OF EVERYONE IN PILOT; 
+QUESTION ASKED IF AGE 13+ OR AGEC 3+ IN MAIN STUDY","Recruitment","Survey Response","Number (Double)"
+"PAY_TYPE1","Method of Transit Fare Payment (Last Week)","01 Tokens / Cash / Paper Ticket / Exact Change
+02  SEPTA One Day Pass
+03  SEPTA Weekly pass     
+04  SEPTA Monthly Pass    
+05  TAP > RIDE Pass or Contactless Card 
+06  NJ TRANSIT One-Way Patron Pass
+07  NJ TRANSIT Weekly pass
+08  NJ TRANSIT Monthly pass  
+09  PATCO FREEDOM Smart Card
+10   Other Rail / Train / Subway pass/payment
+11  Other Bus / Trolleybus pass/payment
+12  Other Ferry / Boat pass/payment 
+13  Senior Citizen Pass
+14  Student Pass
+15  Disabled Pass
+16  SEPTA Ten Trip
+17  School Bus
+98   Don't know
+99   Refused","[IF T_TRIP >  0] ; Multiple response","Recruitment","Survey Response","Number (Double)"
+"PAY_TYPE2","Method of Transit Fare Payment (Last Week)","01 Tokens / Cash / Paper Ticket / Exact Change
+02  SEPTA One Day Pass
+03  SEPTA Weekly pass     
+04  SEPTA Monthly Pass    
+05  TAP > RIDE Pass or Contactless Card 
+06  NJ TRANSIT One-Way Patron Pass
+07  NJ TRANSIT Weekly pass
+08  NJ TRANSIT Monthly pass  
+09  PATCO FREEDOM Smart Card
+10   Other Rail / Train / Subway pass/payment
+11  Other Bus / Trolleybus pass/payment
+12  Other Ferry / Boat pass/payment 
+13  Senior Citizen Pass
+14  Student Pass
+15  Disabled Pass
+16  SEPTA Ten Trip
+17  School Bus
+98   Don't know
+99   Refused","[IF T_TRIP >  0] ; Multiple response","Recruitment","Survey Response","Number (Double)"
+"PAY_TYPE3","Method of Transit Fare Payment (Last Week)","01 Tokens / Cash / Paper Ticket / Exact Change
+02  SEPTA One Day Pass
+03  SEPTA Weekly pass     
+04  SEPTA Monthly Pass    
+05  TAP > RIDE Pass or Contactless Card 
+06  NJ TRANSIT One-Way Patron Pass
+07  NJ TRANSIT Weekly pass
+08  NJ TRANSIT Monthly pass  
+09  PATCO FREEDOM Smart Card
+10   Other Rail / Train / Subway pass/payment
+11  Other Bus / Trolleybus pass/payment
+12  Other Ferry / Boat pass/payment 
+13  Senior Citizen Pass
+14  Student Pass
+15  Disabled Pass
+16  SEPTA Ten Trip
+17  School Bus
+98   Don't know
+99   Refused","[IF T_TRIP >  0] ; Multiple response","Recruitment","Survey Response","Number (Double)"
+"TAP","TAP Card or EZ transit Pass Type","1 Pay-As-You-Go
+2 Ten-Trip
+3 Monthly
+4 Other TAP>RIDE or Contactless Card
+98 Don't Know
+99 Refused",NA,"Recruitment","Survey Response","Number (Double)"

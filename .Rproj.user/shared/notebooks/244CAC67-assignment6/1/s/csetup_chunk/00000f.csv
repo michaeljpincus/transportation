@@ -1,0 +1,8 @@
+"0","#| label: setup"
+"0","library(tidyverse)"
+"0","library(readxl)"
+"0","library(ggplot2)"
+"0","library(showtext)"
+"0",""
+"0","font_add_google(name = ""Roboto"", family = ""roboto"")"
+"0","showtext_auto()"

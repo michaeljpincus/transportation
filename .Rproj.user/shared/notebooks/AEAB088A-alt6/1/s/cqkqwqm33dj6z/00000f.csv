@@ -1,0 +1,6 @@
+"0","#| label: q9-helpers"
+"0","cf1 <- summary(m1)$coefficients"
+"0","dirn <- function(x) ifelse(x > 0, ""positive"", ""negative"")"
+"0","sig  <- function(tbl, v) paste0(""p "", ifelse(tbl[v, 4] < 0.001, ""< 0.001"", paste0(""= "", signif(tbl[v, 4], 2))),"
+"0","                                ifelse(tbl[v, 4] < 0.05, "", statistically significant"", "", not statistically significant""),"
+"0","                                "" at the 5% level"")"

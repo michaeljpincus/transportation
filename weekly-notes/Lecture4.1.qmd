@@ -1,0 +1,102 @@
+---
+title: "Lecture 4.1"
+date: 09-15-2026
+format: html
+editor: visual
+---
+
+## How can we fairly spend money in PA?
+
+- Network gaps/congestion bottlenecks
+
+- Repair existing infrastructure ("fix it first")
+
+- Most served corridors
+
+- Take into account rural vs. urban needs
+
+- Focus on the communities the most in need
+
+- Can't be fair if only PennDOT chooses
+
+We have degrees and dimensions of fairness that change a lot of the time. For example, we don't want to give all of the state's money to SEPTA, but it is the area that needs the most (due to the highest transit ridership)
+
+Should people that take commuter rail pay more than those that take the bus?
+
+- Commuter rail costs more to operate, riders commuting into the city likely have higher paying job
+
+Should counties that pay more to the state government receive more money?
+
+- Should they receive proportionally more?
+
+- How do we take into account income inequalities, such as in Philadelphia?
+
+When talking about the wage tax, it's important to note that it's often a substitute for property tax income. The University of Pennsylvania does not pay property taxes to the city!
+
+## Transportation Finance and Equity
+
+### How should the money come in?
+
+- Flat fee per person?
+
+  - Vehicle registration
+
+- Ability to pay?
+
+  - Discounted fees for transit fares and congestion pricing
+
+- Benefits received?
+
+  - Congestion toll, gas tax
+
+- Costs imposed?
+
+  - Congestion fee, paying higher taxes due to higher polluting vehicle, vehicle does not pass inspection (penalty fee)
+
+### Current issues
+
+Difficulty passing transportation laws
+
+- No new revenue from transportation sources (gas tax revenue is decreasing)
+
+- Shift in funds from other sources
+
+- Large shortfall in trust fund
+
+"Crumbling infrastructure"
+
+- Things are costing more and more to repair infrastructure
+
+Recent proposals
+
+- Infrastructure bank
+
+- "Fix it first"
+
+- Biden's infrastructure plan (promised a lot of spending, though no new
+
+- Trump's plan to remove transit subsidies and privatize the FAA
+
+### How to square the revenue circle
+
+Issues to consider:
+
+- Revenue raising (amount and stability)
+
+- Political acceptability (for voters, lawmakers, and interest groups)
+
+- Fairness (who pays? who benefits?)
+
+  - Are they regressive? (i.e., does it disproportionately impact those who have less means to pay?). In Norway, speeding tickets are proportional to annual income. In the US, most fees are regressive since they are flat fees.
+
+- Effects on the use of transportation
+
+  - If we got rid of gas taxes, then people might be more incentivised to buy a less fuel-efficient vehicle
+
+  - In Singapore, limits on car ownership is enforced
+
+- Effects on broader economy
+
+- Administrative ease
+
+There are lots of options for increasing revenues, such as *general funds, gas taxes, tolling, sales taxes, property taxes, VMT fees, price parking, PPPs, bonds, developer impact fees, higher car registration fees*

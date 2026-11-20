@@ -1,0 +1,3 @@
+"0","#| label: station-data"
+"0","df  <- read.csv(""data.csv"")"
+"0","hrt <- subset(df, hrt_d == 1)   # heavy-rail stations only"

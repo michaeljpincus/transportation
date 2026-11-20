@@ -1,0 +1,28 @@
+---
+title: "Carbon Emissions"
+date: 10-08-2026
+format: html
+editor: visual
+---
+
+## Calculating Greenhouse Gas Emissions
+
+### ASIF Framework
+
+$$
+G(\text{emissions}) = A * S_k*I_{kj}*F_kj
+$$
+
+Where:
+
+- $A$: quantitiative measure of an activity that results in greenhouse gas emissions. Activities in passenger miles of travel ( $\text{PMT}$ ).
+
+- $S_k$: the fraction or percentage of the total activity $A$ that belongs to a specific sub-category, technology, or fuel type $k$
+
+- $I_{kj}$: the fraction of sub-category $k$ that is ubject to a specific environmental control technology, operating condition, or management practice $j$.
+
+  - ex. the % of a facility's emissions that pass through a carbon capture system or a catalytic converter
+
+- $F_{kj}$: the specific multiplier used to convert the clean, categorized activity data into actual emissions. It dictates how many mass units of a pollutant are given off per unit of activity.
+
+  - ex. the kg of carbon emitted per gallon of diesel consumed under control condition $j$

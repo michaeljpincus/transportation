@@ -1,0 +1,14 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---(- **Population within a half mile:** the relationship is <<dirn(cf1[""pop_halfmile"",1])>>. Each additional resident is associated with <<round(cf1[""pop_halfmile"",1], 3)>> additional daily riders, or about <<round(1000*cf1[""pop_halfmile"",1])>> more riders for every 1,000 additional residents (<<sig(cf1, ""pop_halfmile"")>>)."
+"0","- **Jobs within a half mile:** the relationship is <<dirn(cf1[""jobs_halfmile"",1])>>. Each additional job is associated with <<round(cf1[""jobs_halfmile"",1], 3)>> additional daily riders, or about <<round(1000*cf1[""jobs_halfmile"",1])>> more riders for every 1,000 additional jobs (<<sig(cf1, ""jobs_halfmile"")>>)."
+"0","- **Terminal station:** the relationship is <<dirn(cf1[""terminal_d"",1])>>. Terminal stations have on average <<round(abs(cf1[""terminal_d"",1]))>> <<ifelse(cf1[""terminal_d"",1] > 0, ""more"", ""fewer"")>> daily riders than non-terminal stations with the same population and jobs (<<sig(cf1, ""terminal_d"")>>)."
+"0","- **Airport connection:** the relationship is <<dirn(cf1[""airport_d"",1])>>. Stations connecting to an airport have on average <<round(abs(cf1[""airport_d"",1]))>> <<ifelse(cf1[""airport_d"",1] > 0, ""more"", ""fewer"")>> daily riders than other stations with the same population and jobs (<<sig(cf1, ""airport_d"")>>).)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","- **Population within a half mile:** the relationship is positive. Each additional resident is associated with 0.22 additional daily riders, or about 220 more riders for every 1,000 additional residents (p < 0.001, statistically significant at the 5% level).
+- **Jobs within a half mile:** the relationship is positive. Each additional job is associated with 0.74 additional daily riders, or about 740 more riders for every 1,000 additional jobs (p < 0.001, statistically significant at the 5% level).
+- **Terminal station:** the relationship is positive. Terminal stations have on average 5767 more daily riders than non-terminal stations with the same population and jobs (p < 0.001, statistically significant at the 5% level).
+- **Airport connection:** the relationship is positive. Stations connecting to an airport have on average 680 more daily riders than other stations with the same population and jobs (p = 0.87, not statistically significant at the 5% level)."
+"1"," "
+"1","
+
+"

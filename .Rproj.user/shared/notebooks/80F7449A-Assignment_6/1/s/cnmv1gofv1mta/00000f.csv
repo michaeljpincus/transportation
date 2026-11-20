@@ -1,0 +1,8 @@
+"0","#| label: q11-resid"
+"0","diag1 <- data.frame(fitted = fitted(m1), resid = resid(m1))"
+"0",""
+"0","ggplot(diag1, aes(x = fitted, y = resid)) +"
+"0","  geom_point(alpha = 0.6, color = ""steelblue"") +"
+"0","  geom_hline(yintercept = 0, color = ""red"", linetype = ""dashed"") +"
+"0","  labs(title = ""Residuals vs. predicted ridership (linear model)"","
+"0","       x = ""Predicted ridership"", y = ""Residual"") + theme_minimal(base_family='roboto')"

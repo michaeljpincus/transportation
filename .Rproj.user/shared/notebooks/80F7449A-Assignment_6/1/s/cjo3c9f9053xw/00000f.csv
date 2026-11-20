@@ -1,0 +1,8 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---(The model explains <<round(100*summary(m1)$r.squared, 1)>>% of the variation in station ridership (adjusted R² = <<round(summary(m1)$adj.r.squared, 3)>>). Holding the other variables constant, each coefficient is the change in average daily station ridership (riders) for a one-unit change in the predictor:)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","The model explains 38.6% of the variation in station ridership (adjusted R² = 0.383). Holding the other variables constant, each coefficient is the change in average daily station ridership (riders) for a one-unit change in the predictor:"
+"1"," "
+"1","
+
+"

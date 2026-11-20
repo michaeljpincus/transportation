@@ -1,0 +1,5 @@
+"0",""
+"0","ggplot(hrt_pos, aes(ln_rider)) +"
+"0","  geom_histogram(bins = 30, fill = ""steelblue"", color = ""white"") +"
+"0","  labs(title = ""Natural log of heavy-rail station ridership"","
+"0","       x = ""ln(Ridership)"", y = ""Stations"") + theme_minimal(base_family='roboto') "

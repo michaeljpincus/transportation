@@ -1,0 +1,8 @@
+"0","#| label: q12-resid"
+"0","diag_log <- data.frame(fitted = fitted(m_log), resid = resid(m_log))"
+"0",""
+"0","ggplot(diag_log, aes(x = fitted, y = resid)) +"
+"0","  geom_point(alpha = 0.6, color = ""steelblue"") +"
+"0","  geom_hline(yintercept = 0, color = ""red"", linetype = ""dashed"") +"
+"0","  labs(title = ""Residuals vs. predicted ln(ridership)"","
+"0","       x = ""Predicted ln(ridership)"", y = ""Residual"") + theme_minimal(base_family='roboto')"

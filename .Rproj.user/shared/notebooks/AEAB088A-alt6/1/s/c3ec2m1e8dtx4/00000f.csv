@@ -1,0 +1,6 @@
+"0","#| label: q7-scatter"
+"0","ggplot(hrt, aes(x = jobs_halfmile, y = rider)) +"
+"0","  geom_point(alpha = 0.6, color = ""steelblue"") +"
+"0","  geom_smooth(method = ""lm"", se = FALSE, color = ""red"") +"
+"0","  labs(title = ""Heavy-rail ridership vs. nearby jobs"","
+"0","       x = ""Jobs within a half mile"", y = ""Station ridership"") + theme_minimal(base_family='roboto')"

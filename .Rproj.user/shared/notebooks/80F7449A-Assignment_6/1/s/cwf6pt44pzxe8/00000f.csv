@@ -1,0 +1,8 @@
+"0","#| label: q8-cor"
+"0","hrt_pj <- subset(hrt, rider > 0 & jobs_halfmile > 0)"
+"0","cor_log <- cor(log(hrt_pj$jobs_halfmile), log(hrt_pj$rider))"
+"0","cor_log"
+"1","[1]"
+"1"," 0.5310356"
+"1","
+"

@@ -1,0 +1,330 @@
+Variable,Field Description,Values,Notes/Comments,Data Source,Type,Field Type
+HH_ID,Household ID,Up to 7 digits,NA,Sample,Sample,Number (Double)
+PERSON_NUM,Person ID,2-digit numeric,NA,Recruitment,Assigned,Number (Double)
+PERSON_ID,Household Person ID,Up to 9 digits (HH_ID+PERSON_NUM),NA,Recruitment,Assigned,Number (Double)
+HH_WEIGHT,Weight of person's household,Numeric,NA,Calculated,Calculated,Number (Double)
+P_WEIGHT,Weight of person taking trip,Numeric,NA,Calculated,Calculated,Number (Double)
+TOUR_NUM,Tour Number,2-digit numeric,Not applicable to TRIP_NUM = 0 or 97 (blank),Retrieval,Calculated,Number (Double)
+WKSUB_NUM,Sub-tour from Work Number,2-digit numeric,Not applicable to TRIP_NUM = 0 or 97 (blank),Retrieval,Calculated,Number (Double)
+WKSUB_ID,Sub-tour from Work ID,Up to 13 digits (HH_ID + PERSON_NUM + TOUR_NUM + WKSUB_NUM),NA,Retrieval,Assigned,Number (Double)
+TRIP_NUM,Trip Number,"2-digit numeric
+0 No Trips; 97 Final Destination",NA,Retrieval,Assigned,Number (Double)
+TRIP_ID,Person's Trip ID,Up to 15 digits (HH_ID + PERSON_NUM + TOUR_NUM + WKSUB_NUM + TRIP_NUM),Not applicable to TRIP_NUM = 0 or 97 (blank),Retrieval,Assigned,Number (Double)
+RECORD_ID,Person's Record ID,Up to 11 digits (HH_ID + PERSON_NUM + TRIP_NUM),Exists for every record in the trip table; including no trips (0) and last trip of the day (97),Retrieval,Assigned,Number (Double)
+NOGO,Confirmation of No Trips,"1 Yes
+2 No
+8 Don't know
+9 Refused",NA,Retrieval,Survey Response,Number (Double)
+WHYNO,Reason Why No Trips Were Made on Travel Day,"1 Personally sick 
+2 Vacation or personal day 
+3 Caretaking sick kids
+4 Caretaking sick other 
+5 Homebound elderly or disabled
+6 Worked at home for pay
+7 Not scheduled to work
+8 Worked around home (not for pay)
+9 No transportation available
+10 Out of Delaware Valley region
+11 Weather
+12 No reason to travel
+97 Other
+98 Don't know
+99 Refused",NA,Retrieval,Survey Response,Number (Double)
+TOUR_TYPE,Tour Type,"1 Home based work
+2 Home based other
+3 Non home based
+4 No trips",NA,Retrieval,Calculated,Number (Double)
+TOUR_STOPS,Tour Stops,Numeric,Recorded as part of first trip record for each tour,Retrieval,Calculated,Number (Double)
+START_TRAV,At Location or Traveling at 3am,"1 Traveling
+2 At a location",Only relevant if TRIP_NUM=0 or 1,Retrieval,Survey Response,Number (Double)
+ORIGIN INFORMATION,NA,NA,NA,NA,NA,NA
+O_LOC_TYPE,Origin location Type,"1  Home
+2  Work
+3  School
+4  Other",NA,Calculated,Calculated,Number (Double)
+O_GEO_ACC,Accuracy of Origin Location,"1  Match
+2  Cross Street
+3  Street Centroid
+4  City or Zipcode Centroid
+5  State (out of region)
+99  Not Geocodable",NA,Calculated,Calculated,Number (Double)
+O_State,State of Origin locaiton based on coordinates,"34 New Jersey
+42 Pennsylvania",NA,Calculated,Calculated,Number (Double)
+O_Region,Region of Origin locaiton based on coordinates,"1  DVRPC Region (9 counties)
+2  Extended Model Counties
+3  Beyond Extended Model Counties
+",NA,Calculated,Calculated,Number (Double)
+O_County,County of Origin locaiton based on coordinates,"42017  Bucks
+42029  Chester
+42045  Delaware
+42091  Montgomery
+42101  Philadelphia
+34005  Burlington
+34007  Camden
+34015  Gloucester
+34021  Mercer",NA,Calculated,Calculated,Number (Double)
+O_CPA,County Planning Area of Origin locaiton based on coordinates,Numeric,NA,Calculated,Calculated,Text
+O_Tract,Census Tract of Origin locaiton based on coordinates,Numeric,NA,Calculated,Calculated,Number (Double)
+O_TAZ,Transportaiton Analysis Zone of Origin locaiton based on coordinates,Numeric,NA,Calculated,Calculated,Number (Double)
+ARRIVE,Arrival time (MILITARY TIME),"HH:MM
+9998 Don't know
+9999 Refused",NA,Retrieval,Survey Response,Text
+ACTIV1,Activity 1 at Origin,"1 Home activities not related to work, school, or online
+2 Homework, class related assignments or attended an online course
+3 Attended classes
+4 Attended other school activities (performances, meetings, clubs)
+5 Work for pay
+6 Personal business (banking or ATM, salon, library)
+7 Online personal business (banking, e-mail, etc.)
+8 Everyday shopping (grocery, drug store, gas, etc.)
+9 Major shopping (appliances, cars, home furnishings, clothes, etc.)
+10 Online shopping for products, services or goods
+11 Eat out (restaurant, drive-thru, etc.)
+12 Social (visit friends, relatives, etc.)
+13 Social/community/religious (meetings, worhship, wedding, funeral, etc.)
+14 Recreation- active participation (sports, exercise, walk the dog, etc.)
+15 Recreation-watch/observe (movies, concert, sports event, etc.)
+16 Medical (medical appointment, medical procedure, etc.)
+17 Pick up passenger
+18 Drop off passenger
+19 Change type of transportation/transfer
+20 Accompany household member
+96 Other activity",Multiple Response; up to 4 selections,Retrieval,Calculated,Number (Double)
+ACTIV2,Activity 2 at Origin,"1 Home activities not related to work, school, or online
+2 Homework, class related assignments or attended an online course
+3 Attended classes
+4 Attended other school activities (performances, meetings, clubs)
+5 Work for pay
+6 Personal business (banking or ATM, salon, library)
+7 Online personal business (banking, e-mail, etc.)
+8 Everyday shopping (grocery, drug store, gas, etc.)
+9 Major shopping (appliances, cars, home furnishings, clothes, etc.)
+10 Online shopping for products, services or goods
+11 Eat out (restaurant, drive-thru, etc.)
+12 Social (visit friends, relatives, etc.)
+13 Social/community/religious (meetings, worhship, wedding, funeral, etc.)
+14 Recreation- active participation (sports, exercise, walk the dog, etc.)
+15 Recreation-watch/observe (movies, concert, sports event, etc.)
+16 Medical (medical appointment, medical procedure, etc.)
+17 Pick up passenger
+18 Drop off passenger
+19 Change type of transportation/transfer
+20 Accompany household member
+96 Other activity",Multiple Response; up to 4 selections,Retrieval,Calculated,Number (Double)
+ACTIV3,Activity 3 at Origin,"1 Home activities not related to work, school, or online
+2 Homework, class related assignments or attended an online course
+3 Attended classes
+4 Attended other school activities (performances, meetings, clubs)
+5 Work for pay
+6 Personal business (banking or ATM, salon, library)
+7 Online personal business (banking, e-mail, etc.)
+8 Everyday shopping (grocery, drug store, gas, etc.)
+9 Major shopping (appliances, cars, home furnishings, clothes, etc.)
+10 Online shopping for products, services or goods
+11 Eat out (restaurant, drive-thru, etc.)
+12 Social (visit friends, relatives, etc.)
+13 Social/community/religious (meetings, worhship, wedding, funeral, etc.)
+14 Recreation- active participation (sports, exercise, walk the dog, etc.)
+15 Recreation-watch/observe (movies, concert, sports event, etc.)
+16 Medical (medical appointment, medical procedure, etc.)
+17 Pick up passenger
+18 Drop off passenger
+19 Change type of transportation/transfer
+20 Accompany household member
+96 Other activity",Multiple Response; up to 4 selections,Retrieval,Calculated,Number (Double)
+ACTIV4,Activity 4 at Origin,"1 Home activities not related to work, school, or online
+2 Homework, class related assignments or attended an online course
+3 Attended classes
+4 Attended other school activities (performances, meetings, clubs)
+5 Work for pay
+6 Personal business (banking or ATM, salon, library)
+7 Online personal business (banking, e-mail, etc.)
+8 Everyday shopping (grocery, drug store, gas, etc.)
+9 Major shopping (appliances, cars, home furnishings, clothes, etc.)
+10 Online shopping for products, services or goods
+11 Eat out (restaurant, drive-thru, etc.)
+12 Social (visit friends, relatives, etc.)
+13 Social/community/religious (meetings, worhship, wedding, funeral, etc.)
+14 Recreation- active participation (sports, exercise, walk the dog, etc.)
+15 Recreation-watch/observe (movies, concert, sports event, etc.)
+16 Medical (medical appointment, medical procedure, etc.)
+17 Pick up passenger
+18 Drop off passenger
+19 Change type of transportation/transfer
+20 Accompany household member
+96 Other activity",Multiple Response; up to 4 selections,Retrieval,Calculated,Number (Double)
+ACT_DUR1,Activity 1 Duration,"Amount of time for each activity (i.e. 0:30, or 1:30, etc.)",NA,Retrieval,Calculated,Text
+ACT_DUR2,Activity 2 Duration,"Amount of time for each activity (i.e. 0:30, or 1:30, etc.)",NA,Retrieval,Calculated,Text
+ACT_DUR3,Activity 3 Duration,"Amount of time for each activity (i.e. 0:30, or 1:30, etc.)",NA,Retrieval,Calculated,Text
+ACT_DUR4,Activity 4 Duration,"Amount of time for each activity (i.e. 0:30, or 1:30, etc.)",NA,Retrieval,Calculated,Text
+DEPART,Departure Time (MILITARY TIME),"HH:MM
+9997 Did not leave location
+9998 Don't know
+9999 Refused",NA,Retrieval,Calculated,Text
+MODE,Mode of Transportation,"01 Walk
+02 Bike
+03 Wheelchair / Mobility Scooter
+04 Other non-motorized (Skateboard, etc.)
+PRIVATE VEHICLE:
+05 Auto / Van / Truck
+06 Carpool / Vanpool
+07 Motorcycle / Scooter / Moped
+08 Taxi / Hired Car / Limo
+09 Rental car/ car share vehicle (ZipCar, etc.)
+10 Private shuttle (RapidRover, employer, hotel, etc.)
+11 Greyhound / Bolt / Mega Bus
+12 Airplane
+13 Other private transit
+14   SEPTA Bus / Trolleybus
+15  NJ TRANSIT Bus
+16 TMA Shuttle (includes Pottstown Area Rapid Transit, Coatesville Link, Beeline Burlink, Doylestown DART, Bieber Bus, Tiger Transit)
+17 AMTRAK Bus
+18 School Bus
+19  Dial-a-Ride / ParaTransit (Access Services, etc.)
+20 Other bus
+21 SEPTA Subway/the El (includes Market-Frankford Line, Broad Street Line, or Norristown High Speed Line)
+22 SEPTA Regional Rail
+23 SEPTA Trolley / Light Rail
+24 NJ TRANSIT Commuter Rail (includes Northeast Corridor, Atlantic City Line,  etc.)
+25 NJ TRANSIT Light Rail (includes River LINE, Hudson-Bergen Light Rail, Newark Light Rail)
+26 PATCO (Port Authority Transit Corporation) Speedline
+27 AMTRAK Train
+28 Other rail
+29 RIVERLINK FERRY
+30 Other Boat / Ferry
+",NA,Retrieval,Survey Response,Number (Double)
+MODE_AGG,Aggregate of transportation modes,"1  Walk
+2  Bike
+3  Private Vehicle
+4  Private Transit
+5  Public Transit
+6  School Bus
+7  Other",NA,Retrieval,Calculated,Number (Double)
+PARTY,"[IF MODE EQ 5,6,7,9] Number of Persons Traveling","RECORD NUMBER (Not including respondent)
+97 More than 15 people
+98 Don't know
+99 Refused",NA,Retrieval,Survey Response,Number (Double)
+HH_MEM,Number of HH Members Traveling,"RECORD NUMBER
+98 Don't know 
+99 Refused","[IF MODE  =  05, 06, 07 OR 09, AND IF PARTY > 0 AND < 98]",Retrieval,Survey Response,Number (Double)
+HH_PER_NUM1,Household Member Traveling (PERSON_NUM),"1 thru 15
+98 Don't know
+99 Refused",[IF HH_MEM >0 AND < 98],Retrieval,Survey Response,Number (Double)
+HH_PER_NUM2,Household Member Traveling (PERSON_NUM),"1 thru 15
+98 Don't know
+99 Refused",[IF HH_MEM >0 AND < 98],Retrieval,Survey Response,Number (Double)
+HH_PER_NUM3,Household Member Traveling (PERSON_NUM),"1 thru 15
+98 Don't know
+99 Refused",[IF HH_MEM >0 AND < 98],Retrieval,Survey Response,Number (Double)
+HH_PER_NUM4,Household Member Traveling (PERSON_NUM),"1 thru 15
+98 Don't know
+99 Refused",[IF HH_MEM >0 AND < 98],Retrieval,Survey Response,Number (Double)
+HH_PER_NUM5,Household Member Traveling (PERSON_NUM),"1 thru 15
+98 Don't know
+99 Refused",[IF HH_MEM >0 AND < 98],Retrieval,Survey Response,Number (Double)
+HH_PER_NUM6,Household Member Traveling (PERSON_NUM),"1 thru 15
+98 Don't know
+99 Refused",[IF HH_MEM >0 AND < 98],Retrieval,Survey Response,Number (Double)
+DRVER,Was the person making this trip the driver of the vehicle?,"1 Yes
+2 No
+98 Don't know
+99 Refused","[IF MODE = 5,6,7,9]",Retrieval,Survey Response,Number (Double)
+VEH_NUM,Household Vehicle Used for Trip,"Household Vehicle Number
+97 Non-HH vehicle
+98 Don't know
+99 Refused",NA,Retrieval,Survey Response,Number (Double)
+USE_TOLL,Used Toll Road or Toll Bridge on Trip,"1 Yes, toll road
+2 Yes, toll bridge
+3 Yes, both toll road and toll bridge
+4 No
+8 Don't know
+9 Refused","[IF MODE = 5,6,7,9]",Retrieval,Survey Response,Number (Double)
+TOLL_RD1,Used Toll Road: New Jersey Turnpike (I-95),"0 Not used
+1 New Jersey Turnpike (I-95)
+98 Don't know
+99 Refused",[IF USE_TOLL = 1 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_RD2,Used Toll Road: Garden State Parkway,"0 Not used
+1 Garden State Parkway",[IF USE_TOLL = 1 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_RD3,Used Toll Road: Atlantic City Expressway,"0 Not used
+1 Atlantic City Expressway",[IF USE_TOLL = 1 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_RD4,Used Toll Road: Pennsylvania Turnpike,"0 Not used
+1 Pennsylvania Turnpike",[IF USE_TOLL = 1 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_RD5,Used Toll Road: New Jersey Turnpike - Pennsylvania Extension,"0 Not used
+1 New Jersey Turnpile-Pennsylvania Extension",[IF USE_TOLL = 1 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_B1,Used Toll Bridge: Benjamin Franklin Bridge,"0 Not used
+1 Benjamin Franklin Bridge
+98 Don't know
+99 Refused",[IF USE_TOLL = 2 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_B2,Used Toll Bridge: Walt Whitman Bridge,"0 Not used
+1 Walt Whitman Bridge",[IF USE_TOLL = 2 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_B3,Used Toll Bridge: Betsy Ross Bridge,"0 Not used
+1 Betsy Ross Bridge",[IF USE_TOLL = 2 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_B4,Used Toll Bridge: Burlington-Bristol Bridge,"0 Not used
+1 Burlington-Bristol Bridge",[IF USE_TOLL = 2 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_B5,Used Toll Bridge: Delaware Memorial Bridge,"0 Not used
+1 Delaware Memorial Bridge",[IF USE_TOLL = 2 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_B6,Used Toll Bridge: Tacony-Palmyra Bridge,"0 Not used
+1 Tacony-Palmyra Bridge",[IF USE_TOLL = 2 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_B7,Used Toll Bridge: Commodore Barry Bridge,"0 Not used
+1 Commodore Barry Bridge",[IF USE_TOLL = 2 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_B8,Used Toll Bridge:Trenton-Morrisville Route 1,"0 Not used
+1 Trenton-Morrisville Route 1 Toll Bridge",[IF USE_TOLL = 2 or 3],Retrieval,Survey Response,Number (Double)
+TOLL_B9,Used Toll Bridge: New Hope-Lambertville Route 202,"0 Not used
+1 New Hope-Lambertville Route 202 Toll Bridge",[IF USE_TOLL = 2 or 3],Retrieval,Survey Response,Number (Double)
+PARK_AT,Parked At or Near Location,"1 Yes 
+2 No
+8 Don't know
+9 Refused",NA,Retrieval,Survey Response,Number (Double)
+PARK_TRAV,Number of Minutes From Parking Location to Destination,"MINUTES [RANGE: 0 TO 97]
+98 Don't know
+99 Refused",NA,Retrieval,Survey Response,Number (Double)
+PARK_PAY,Was there a charge for parking?,"1 Yes
+2 No
+8 Don't know
+9 Refused",NA,Retrieval,Survey Response,Number (Double)
+PARK_COST,How much did parking cost?,"Format _ _ _. _ _
+999.99 Don't know",NA,Retrieval,Survey Response,Number (Double)
+PARK_UNIT,Parking Cost Unit,"1 Hour 
+2 Day
+3 Week
+4 Month
+5 Quarter
+6 Semester
+7 Year 
+97 Other
+98 Don't know
+99 Refused",NA,Retrieval,Survey Response,Number (Double)
+DESTINATION INFORMATION,NA,NA,NA,NA,NA,NA
+D_LOC_TYPE,Destination location Type,"1  Home
+2  Work
+3  School
+4  Other",NA,Calculated,Calculated,Number (Double)
+D_GEO_ACC,Accuracy of Destination Locaiton,"1  Match
+2  Cross Street
+3  Street Centroid
+4  City or Zipcode Centroid
+5  State (out of region)
+99  Not Geocodable",NA,Calculated,Calculated,Number (Double)
+D_State,State of Destination locaiton based on coordinates,"34 New Jersey
+42 Pennsylvania",NA,Calculated,Calculated,Number (Double)
+D_Region,Region of Destination locaiton based on coordinates,"1  DVRPC Region (9 counties)
+2  Extended Model Counties
+3  Beyond Extended Model Counties
+",NA,Calculated,Calculated,Number (Double)
+D_County,County of Destination locaiton based on coordinates,"42017  Bucks
+42029  Chester
+42045  Delaware
+42091  Montgomery
+42101  Philadelphia
+34005  Burlington
+34007  Camden
+34015  Gloucester
+34021  Mercer",NA,Calculated,Calculated,Number (Double)
+D_CPA,County Planning Area of Destination locaiton based on coordinates,Numeric,NA,Calculated,Calculated,Text
+D_Tract,Tract of Destination locaiton based on coordinates,Numeric,NA,Calculated,Calculated,Number (Double)
+D_TAZ,Transporation Analysis Zone of school Destination based on coordinates,Numeric,NA,Calculated,Calculated,Number (Double)
+CALCULATED TRIP INFORMATION,NA,NA,NA,NA,NA,NA
+TripFactor,Corrected count of trip based on person's GPS Factor,Numeric,NA,Calculated,Calculated,Number (Double)
+Survey_TravTime,Travel time between diary recorded daparture and arrival,Numeric,NA,Calculated,Calculated,Number (Double)
+Model_TravTime,Travel time between diary recorded departure TAZ and arrival TAZ; determined using TIM 2.2 model; based on mode choice,Numeric,NA,Calculated,Calculated,Number (Double)
+Model_TravDist,Network travel distance between diary recorded departure TAZ and arrival TAZ; determined using TIM 2.2 model; based on mode choice,Numeric,NA,Calculated,Calculated,Number (Double)

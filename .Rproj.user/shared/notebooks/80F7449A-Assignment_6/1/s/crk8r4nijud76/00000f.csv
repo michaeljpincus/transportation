@@ -1,0 +1,8 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---(**Fit.** The log-log model has an R² of <<round(summary(m_log)$r.squared, 3)>> compared with <<round(summary(m1)$r.squared, 3)>> for the linear model. These R² values are measured on different dependent variables (ln ridership versus ridership), so they are only a rough comparison, and the residual standard errors cannot be compared directly at all.)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","**Fit.** The log-log model has an R² of 0.316 compared with 0.386 for the linear model. These R² values are measured on different dependent variables (ln ridership versus ridership), so they are only a rough comparison, and the residual standard errors cannot be compared directly at all."
+"1"," "
+"1","
+
+"

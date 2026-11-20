@@ -1,0 +1,8 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---(**Effect on other coefficients.** The table above compares the coefficients with and without the parking indicator. The largest change in any coefficient is <<round(max(abs(100 * (cf_b[vars, 1] - cf_a[vars, 1]) / abs(cf_a[vars, 1]))), 1)>>%, so adding parking <<ifelse(max(abs((cf_b[vars, 1] - cf_a[vars, 1]) / abs(cf_a[vars, 1]))) < 0.1, ""does not substantially change"", ""noticeably changes"")>> the other estimates, and no sign flips <<ifelse(all(sign(cf_a[vars,1]) == sign(cf_b[vars,1])), ""(confirmed: all signs are unchanged)"", ""(note: at least one sign changed)"")>>.)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","**Effect on other coefficients.** The table above compares the coefficients with and without the parking indicator. The largest change in any coefficient is 0.4%, so adding parking does not substantially change the other estimates, and no sign flips (confirmed: all signs are unchanged)."
+"1"," "
+"1","
+
+"

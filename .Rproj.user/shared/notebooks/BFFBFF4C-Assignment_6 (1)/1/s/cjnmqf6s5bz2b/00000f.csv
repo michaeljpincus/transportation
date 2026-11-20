@@ -1,0 +1,8 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---(**Model fit.** Adjusted R² goes from <<round(summary(m_log_b)$adj.r.squared, 3)>> to <<round(summary(m_log2)$adj.r.squared, 3)>>. The F-test comparing the nested models gives p <<ifelse(pF < 0.001, ""< 0.001"", paste0(""= "", signif(pF, 2)))>> and AIC changes by <<round(-dAIC, 2)>> (lower is better). Overall, adding the park-and-ride indicator <<ifelse(pF < 0.05 & dAIC > 2, ""significantly improves model fit."", ""does not meaningfully improve model fit."")>>)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","**Model fit.** Adjusted R² goes from 0.312 to 0.312. The F-test comparing the nested models gives p = 0.95 and AIC changes by 2 (lower is better). Overall, adding the park-and-ride indicator does not meaningfully improve model fit."
+"1"," "
+"1","
+
+"

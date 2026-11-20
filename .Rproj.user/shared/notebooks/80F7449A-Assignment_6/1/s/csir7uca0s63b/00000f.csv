@@ -1,0 +1,3 @@
+"0","#| echo: false"
+"0","b1 <- coef(m1)"
+"0","tm <- function(x, d) paste0(ifelse(x < 0, "" - "", "" + ""), abs(round(x, d)))"

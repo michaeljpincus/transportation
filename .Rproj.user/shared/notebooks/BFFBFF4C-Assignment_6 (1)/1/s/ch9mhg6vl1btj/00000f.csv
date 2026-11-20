@@ -1,0 +1,8 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---(The model therefore predicts about **<<format(round(pr[1, ""fit""]), big.mark = "","")>> daily riders**. The terminal and airport terms drop out because both indicators equal zero. The 95% prediction interval for an individual station like this runs from <<format(round(pr[1, ""lwr""]), big.mark = "","")>> to <<format(round(pr[1, ""upr""]), big.mark = "","")>> riders, which is wide, so the prediction is imprecise.)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","The model therefore predicts about **10,662 daily riders**. The terminal and airport terms drop out because both indicators equal zero. The 95% prediction interval for an individual station like this runs from -10,892 to 32,215 riders, which is wide, so the prediction is imprecise."
+"1"," "
+"1","
+
+"

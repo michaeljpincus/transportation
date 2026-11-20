@@ -1,0 +1,5 @@
+"0","#| label: q13-vals"
+"0","bp   <- cf_b[""parking_d"", 1]"
+"0","pp   <- cf_b[""parking_d"", 4]"
+"0","dAIC <- AIC(m_log_b) - AIC(m_log2)"
+"0","pF   <- anova(m_log_b, m_log2)$`Pr(>F)`[2]"

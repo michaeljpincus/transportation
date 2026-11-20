@@ -1,0 +1,4 @@
+"0","ggplot(hh) + "
+"0","  geom_density(aes(x=TOT_VEH), fill='darkseagreen', alpha=0.8, color=NA) + "
+"0","  theme_minimal(base_family='jakarta') + "
+"0","  labs(x='Total Vehicles', y='Count', title='Density of Total Vehicles')"

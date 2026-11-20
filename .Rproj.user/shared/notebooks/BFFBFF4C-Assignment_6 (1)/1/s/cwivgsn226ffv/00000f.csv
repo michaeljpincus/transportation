@@ -1,0 +1,6 @@
+"0","#| label: q8-scatter-log"
+"0","ggplot(subset(hrt, rider > 0 & jobs_halfmile > 0),"
+"0","       aes(x = log(jobs_halfmile), y = log(rider))) +"
+"0","  geom_point(alpha = 0.6, color = ""steelblue"") +"
+"0","  geom_smooth(method = ""lm"", se = FALSE, color = ""red"") +"
+"0","  labs(x = ""ln(Jobs within a half mile)"", y = ""ln(Station ridership)"") + theme_minimal(base_family='roboto')"

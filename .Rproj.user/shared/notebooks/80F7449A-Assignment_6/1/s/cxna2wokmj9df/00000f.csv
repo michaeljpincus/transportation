@@ -1,0 +1,8 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---(The residual plot shows a second pattern as well: the spread of the residuals increases with predicted ridership, and the errors are not symmetric (a few very large positive residuals at high ridership). Because ridership is right-skewed and the effects of population and jobs are probably multiplicative rather than additive, a linear model in levels is a poor fit. The model also predicts negative ridership for <<sum(fitted(m1) < 0)>> station(s), which is impossible. The standard errors and p-values from Question 9 are therefore unreliable, because they assume constant error variance.)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","The residual plot shows a second pattern as well: the spread of the residuals increases with predicted ridership, and the errors are not symmetric (a few very large positive residuals at high ridership). Because ridership is right-skewed and the effects of population and jobs are probably multiplicative rather than additive, a linear model in levels is a poor fit. The model also predicts negative ridership for 0 station(s), which is impossible. The standard errors and p-values from Question 9 are therefore unreliable, because they assume constant error variance."
+"1"," "
+"1","
+
+"

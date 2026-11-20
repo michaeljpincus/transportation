@@ -1,0 +1,8 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---(**Interpretation.** The coefficient on `parking_d` is <<round(bp, 3)>>. Because the dependent variable is ln(ridership) and the indicator is not logged, stations with park-and-ride facilities have about <<round(abs(100*(exp(bp) - 1)))>>% <<ifelse(bp > 0, ""higher"", ""lower"")>> ridership than stations without, holding population, jobs, terminal and airport status constant.)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","**Interpretation.** The coefficient on `parking_d` is -0.005. Because the dependent variable is ln(ridership) and the indicator is not logged, stations with park-and-ride facilities have about 0% lower ridership than stations without, holding population, jobs, terminal and airport status constant."
+"1"," "
+"1","
+
+"

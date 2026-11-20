@@ -1,0 +1,8 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---($$\widehat{\text{rider}} = <<round(b1[1], 1)>><<tm(b1[""pop_halfmile""], 4)>>(\text{pop})<<tm(b1[""jobs_halfmile""], 4)>>(\text{jobs})<<tm(b1[""terminal_d""], 1)>>(\text{terminal})<<tm(b1[""airport_d""], 1)>>(\text{airport}).$$)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","$$\widehat{\text{rider}} = 2159.3 + 0.2198(\text{pop}) + 0.7403(\text{jobs}) + 5767(\text{terminal}) + 680.3(\text{airport}).$$"
+"1"," "
+"1","
+
+"

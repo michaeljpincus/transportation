@@ -1,0 +1,7 @@
+"0","hh <- readr::read_csv(""Household travel survey/1_Household_Public.csv"", locale = readr::locale(encoding = ""latin1""))"
+"0",""
+"0","per <- readr::read_csv(""Household travel survey/2_Person_Public.csv"", locale = readr::locale(encoding = ""latin1""))"
+"0",""
+"0","veh <- readr::read_csv(""Household travel survey/3_Vehicle_Public.csv"", locale = readr::locale(encoding = ""latin1""))"
+"0",""
+"0","trip <- readr::read_csv(""Household travel survey/4_Trip_Public.csv"", locale = readr::locale(encoding = ""latin1""))"

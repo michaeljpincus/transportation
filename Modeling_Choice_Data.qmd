@@ -1,0 +1,55 @@
+---
+title: "Modeling Choice Data"
+format: html
+editor: visual
+---
+
+## Modeling Choice Data
+
+### The random utility model
+
+Consumer choice theory: people make choices to maximize utility
+
+Utility is not observable but a function of preferences, trips characteristics, modal characteristics, route characteristics, etc
+
+**Decision-maker**: person, household
+
+**Alternatives**: discrete, decision maker $i$ selects only one alternative
+
+Individual $i$ selects the alternative with the highest utility $U_{ij}$ among those in the choice set $C_j$
+
+Utility:
+
+$$
+U_{ij}=V_{ij}+\epsilon_{ij}
+$$
+
+Where $V_{ij}$ is systematic utility and $\epsilon_{ij}$ is random utility
+
+**Systematic utility** includes quantitative things like travel cost and travel speed, qualitative things like quality of travel, and characteristics like income level
+
+**Random utility** is basically the probability that we are wrong or right
+
+Typical models include **probit** $\phi(x)$ (requires calculus) and **logit** (does not require calculus, we will use it)
+
+### Binary choice
+
+Individuals face two choices, make choices based on attributes of themselves & "choice sets"
+
+Aim: determine the probability that an individual with a given set of characteristics will choose transit
+
+### Logit model
+
+Predicts probability estimates from 0 to 1, better captures changes in probability
+
+Systematic utility $V_{i}$:
+
+$$
+V_i=\beta_o+x_1\beta_1+x_2\beta_2+\dots+x_k\beta_k
+$$
+
+Calculating $V_{i}$ is basically the same thing as a linear regression.
+
+$$
+P_{i(transit)}= \frac{e^{V_i}}{1+e^{V_i}}
+$$

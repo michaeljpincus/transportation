@@ -1,0 +1,8 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---(**Significance and reasonableness.** The coefficient is <<ifelse(pp < 0.05, ""statistically significant"", ""not statistically significant"")>> at the 5% level (p <<ifelse(pp < 0.001, ""< 0.001"", paste0(""= "", signif(pp, 2)))>>). <<ifelse(bp > 0, ""A positive sign is reasonable: park-and-ride lots let a station draw riders from well beyond the half-mile catchment, which the population and jobs variables do not capture."", ""A negative sign is somewhat counterintuitive, since parking should extend a station's catchment. It likely reflects that park-and-ride stations sit in lower-density, suburban locations, where the population and jobs terms already predict lower ridership, so the indicator may be picking up other differences between those stations."")>>)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","**Significance and reasonableness.** The coefficient is not statistically significant at the 5% level (p = 0.95). A negative sign is somewhat counterintuitive, since parking should extend a station's catchment. It likely reflects that park-and-ride stations sit in lower-density, suburban locations, where the population and jobs terms already predict lower ridership, so the indicator may be picking up other differences between those stations."
+"1"," "
+"1","
+
+"

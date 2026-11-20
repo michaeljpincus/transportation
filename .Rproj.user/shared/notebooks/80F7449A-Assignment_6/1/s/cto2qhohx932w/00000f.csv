@@ -1,0 +1,8 @@
+"0","#| output: asis"
+"0","#| echo: false"
+"0","cat(glue::glue(r""---(**Coefficients.** In the linear model the coefficients are additive effects in riders. In the log-log model the coefficients on `log(pop_halfmile)` and `log(jobs_halfmile)` are elasticities: a 1% increase in nearby population is associated with a <<round(cf2[""log(pop_halfmile)"",1], 2)>>% change in ridership, and a 1% increase in nearby jobs with a <<round(cf2[""log(jobs_halfmile)"",1], 2)>>% change, holding the other variables constant. The indicators are not logged, so they are multiplicative effects: terminal stations have about <<round(100*(exp(cf2[""terminal_d"",1]) - 1))>>% <<ifelse(cf2[""terminal_d"",1] > 0, ""higher"", ""lower"")>> ridership than non-terminal stations (<<sig(cf2, ""terminal_d"")>>), and airport stations about <<round(100*(exp(cf2[""airport_d"",1]) - 1))>>% <<ifelse(cf2[""airport_d"",1] > 0, ""higher"", ""lower"")>> (<<sig(cf2, ""airport_d"")>>).)---"", .open = ""<<"", .close = "">>""), ""\n\n"")"
+"1","**Coefficients.** In the linear model the coefficients are additive effects in riders. In the log-log model the coefficients on `log(pop_halfmile)` and `log(jobs_halfmile)` are elasticities: a 1% increase in nearby population is associated with a 0.09% change in ridership, and a 1% increase in nearby jobs with a 0.48% change, holding the other variables constant. The indicators are not logged, so they are multiplicative effects: terminal stations have about 59% higher ridership than non-terminal stations (p < 0.001, statistically significant at the 5% level), and airport stations about 63% higher (p = 0.099, not statistically significant at the 5% level)."
+"1"," "
+"1","
+
+"

@@ -1,0 +1,447 @@
+---
+title: "Assignment 6"
+author: "Michael Pincus"
+date: today
+format:
+  html:
+   code-fold: true
+   include-in-header:
+      text: |
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&family=Roboto+Serif:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+        <style>
+          body { font-family: 'Roboto', sans-serif; }
+          h1, h2, h3, h4, h5, h6, .title { font-family: 'Roboto Serif', serif; }
+          h1 { font-weight: 900; }
+          h2 { font-weight: 800; }
+        </style>
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(readxl)
+library(ggplot2)
+library(showtext)
+
+font_add_google(name = "Roboto", family = "roboto")
+showtext_auto()
+```
+
+## Data
+
+```{r}
+#| label: load-survey
+hh   <- readr::read_csv("Household travel survey/1_Household_Public.csv",
+                        locale = readr::locale(encoding = "latin1"))
+per  <- readr::read_csv("Household travel survey/2_Person_Public.csv",
+                        locale = readr::locale(encoding = "latin1"))
+veh  <- readr::read_csv("Household travel survey/3_Vehicle_Public.csv",
+                        locale = readr::locale(encoding = "latin1"))
+trip <- readr::read_csv("Household travel survey/4_Trip_Public.csv",
+                        locale = readr::locale(encoding = "latin1"))
+
+hh_dict   <- read_excel("dd.xlsx", sheet = "1 Household")
+per_dict  <- read_excel("dd.xlsx", sheet = "2 Person")
+veh_dict  <- read_excel("dd.xlsx", sheet = "3 Vehicle")
+trip_dict <- read_excel("dd.xlsx", sheet = "4 Trip")
+```
+
+# Household Travel Survey
+
+## Question 1
+
+```{r}
+#| label: q1-hist
+ggplot(per) +
+  geom_histogram(aes(x = P_TOT_TRIPS), bins = 15, fill='steelblue') +
+  theme_minimal(base_family='roboto')
+```
+
+The distribution of the number of trips people made is right-skewed; from visual analysis alone, most people took 1-5 trips, while fewer people took more than 5 trips. A log transformation may be beneficial for a regression model.
+
+## Question 2
+
+```{r}
+#| label: q2-indicator
+# 1 = no trips, 0 = at least one trip
+per$no_trips <- ifelse(per$P_TOT_TRIPS == 0, 1, 0)
+
+sum(per$no_trips, na.rm = TRUE)    # number of people with no trips
+table(per$no_trips)                # counts for both groups
+prop.table(table(per$no_trips))    # shares
+```
+
+In the sample, 3,625 people took no trips, about 18% of those sampled.
+
+```{r}
+#| label: q2-recode
+# Recode "don't know" / "refused" codes to NA
+per <- per %>%
+  mutate(
+    AGECAT = ifelse(AGECAT %in% c(98, 99), NA, AGECAT),
+    RACE   = ifelse(RACE   %in% c(98, 99, 988), NA, RACE)
+  )
+
+# Readable labels
+per <- per %>%
+  mutate(
+    RACE_lab = factor(RACE,
+                      levels = c(1, 2, 3, 4, 5, 6, 97, 100),
+                      labels = c("White", "Black", "Hispanic/Latino",
+                                 "Am. Indian/Alaska Native", "Asian",
+                                 "Pacific Islander", "Other", "Multi-race")),
+    AGE_lab = factor(AGECAT, levels = 1:12,
+                     labels = c("<=5", "6-12", "13-15", "16-17", "18-24", "25-34",
+                                "35-44", "45-54", "55-64", "65-74", "75-85", "86+"))
+  )
+```
+
+Column percentages (the share of each group falling in each category):
+
+```{r}
+#| label: q2-race-age
+round(prop.table(table(per$RACE_lab, per$no_trips), margin = 2), 3)
+round(prop.table(table(per$AGE_lab,  per$no_trips), margin = 2), 3)
+```
+
+84% of those taking no trips were white, followed by 10% Black and 2% Asian. 88% of those taking trips were white, followed by 7% Black and 2% Asian. Black residents are somewhat overrepresented among those who took no trips (10% versus 7%).
+
+Among those taking no trips, the largest age shares were in the 65-74 category (20%), followed by 55-64 (18%) and 75-85 (14%). Among those taking trips, the largest shares were in the 55-64 category (22%), followed by 45-54 (17%) and 65-74 (15%). People who took no trips skew much older: those 75 and over are 19% of non-travelers versus 7% of travelers, and children 5 and under are 7% versus 4%.
+
+Income comes from the household table:
+
+```{r}
+#| label: q2-income
+per <- per %>% left_join(hh %>% select(HH_ID, INCOME), by = "HH_ID")
+round(prop.table(table(per$INCOME, per$no_trips), margin = 2), 3)
+```
+
+Among those taking no trips, the largest income shares were households making \$50-\$74K (17%), \$100-\$149K (15%), and \$75-\$99K (12%). Among those taking trips, the largest were \$100-\$149K (20%), \$75-\$99K (16%), and \$50-\$74K (16%). People who took no trips tend to live in lower-income households: households under \$50K make up 33% of non-travelers versus 22% of travelers, while households making \$75K or more make up 29% versus 39%.
+
+## Question 3
+
+Percentage of people who did not travel, by the reason they reported.
+
+```{r}
+#| label: q3-whyno
+whyno_labels <- c(
+  "1"  = "Personally sick",
+  "2"  = "Vacation or personal day",
+  "3"  = "Caretaking sick kids",
+  "4"  = "Caretaking sick other",
+  "5"  = "Homebound elderly or disabled",
+  "6"  = "Worked at home for pay",
+  "7"  = "Not scheduled to work",
+  "8"  = "Worked around home (not for pay)",
+  "9"  = "No transportation available",
+  "10" = "Out of Delaware Valley region",
+  "11" = "Weather",
+  "12" = "No reason to travel",
+  "97" = "Other",
+  "98" = "Don't know",
+  "99" = "Refused"
+)
+
+# One record per person who did not travel
+no_travel <- trip %>%
+  filter(TRIP_NUM == 0) %>%
+  distinct(PERSON_ID, .keep_all = TRUE)
+
+# Unweighted: share of non-travelers giving each reason
+why_tbl <- no_travel %>%
+  mutate(Reason = factor(WHYNO,
+                         levels = as.numeric(names(whyno_labels)),
+                         labels = whyno_labels)) %>%
+  count(Reason, name = "People") %>%
+  mutate(Percent = round(100 * People / sum(People), 1)) %>%
+  arrange(desc(People))
+
+knitr::kable(why_tbl, caption = "Reasons for making no trips")
+```
+
+The five most common reasons for not taking trips (not including the Refused category, which accounts for 8.2% of non-travelers) are:
+
+1.  **No reason to travel (37.3%):** by far the most common reason, given by more than a third of non-travelers. These people simply had no need or desire to leave home that day.
+2.  **Personally sick (9.4%):** illness kept people at home.
+3.  **Worked around home, not for pay (9.3%):** housework, childcare, or other unpaid work at home.
+4.  **Homebound elderly or disabled (8.1%):** people whose age or disability makes travel difficult. This ties to the older age profile of non-travelers in Question 2.
+5.  **Weather (6.1%):** bad weather on the survey day.
+
+After the first reason, the remaining four are each below 10%, and the top five together account for about 70% of non-travelers.
+
+## Question 4
+
+1.  **Trip generation** asks [how many trips are produced in and attracted to each zone?]{.underline} It uses household and zonal characteristics (size, income, vehicles, workers, employment) to estimate trip productions and attractions. The output is the number of trips produced by and attracted to each traffic analysis zone (TAZ), usually by trip purpose.
+2.  **Trip distribution** asks [where do those trips go?]{.underline} It links productions to attractions, typically with a gravity model in which trips fall with travel time or cost and rise with the size of the destination. The output is an origin-destination (zone-to-zone) trip table.
+3.  **Mode choice** asks [how do travelers make each trip?]{.underline} It splits the O-D trips among modes (drive alone, carpool, transit, walk, bike) based on the cost, time and convenience of each mode and on traveler characteristics, often with a logit model. The output is O-D trip tables by mode (mode shares).
+4.  **Trip assignment** asks [which routes do trips take?]{.underline} It loads mode-specific trips onto the highway and transit networks, usually so that travel times are consistent with congestion (equilibrium). The output is volumes (flows) on each link or transit line, plus resulting travel times, speeds and congestion.
+
+## Question 5
+
+- **Trip generation:** The survey gives the number of trips each person and household made, along with household size, income, vehicles and workers. Cross-classifying or regressing trips per household on these characteristics (as in Questions 1-3) yields trip production rates. The survey can also validate a model by comparing predicted and observed trips per household.
+- **Trip distribution:** The survey records trip origins and destinations, so trips can be aggregated into an observed zone-to-zone trip table. That table can be used to estimate the friction (distance-decay) parameter of the gravity model, or to compare observed and predicted trip-length frequency distributions.
+- **Mode choice:** The survey records the mode used for every trip, together with traveler and household characteristics and each trip's origin, destination and time. Observed mode shares can be used to estimate a mode choice model (for example, a logit model) or to check that predicted shares match observed shares.
+- **Why the survey is less useful for trip assignment:** Assignment predicts volumes on specific links and routes. A household survey samples only a small fraction of travelers and records trip endpoints and mode, usually not the path taken, so it cannot directly observe link flows or route choice. Those require traffic counts, transit boardings, GPS or probe data, and the network is then assigned and calibrated against them.
+
+# Station-Level Ridership
+
+```{r}
+#| label: station-data
+df  <- read.csv("data.csv")
+hrt <- subset(df, hrt_d == 1)   # heavy-rail stations only
+```
+
+## Question 6
+
+Histograms of heavy-rail station ridership and its natural log.
+
+```{r}
+#| label: q6-hist
+#| fig-width: 7
+#| fig-height: 4
+hrt_pos <- subset(hrt, rider > 0)
+hrt_pos$ln_rider <- log(hrt_pos$rider)
+
+ggplot(hrt_pos, aes(rider)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  labs(title = "Heavy-rail station ridership", x = "Ridership", y = "Stations") + theme_minimal(base_family='roboto') 
+
+ggplot(hrt_pos, aes(ln_rider)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  labs(title = "Natural log of heavy-rail station ridership",
+       x = "ln(Ridership)", y = "Stations") + theme_minimal(base_family='roboto') 
+```
+
+```{r}
+#| label: q6-summary
+summary(hrt_pos$rider);    sd(hrt_pos$rider)
+summary(hrt_pos$ln_rider); sd(hrt_pos$ln_rider)
+```
+
+The distribution of heavy-rail station ridership is strongly right-skewed. Most stations have fairly low ridership, with a long tail of a few very busy stations. The mean (9,350) is well above the median (5,660), the standard deviation (13,971) is larger than the mean, and the busiest station (189,507) is about 670 times the quietest (282).
+
+The distribution of the natural log of ridership is roughly bell-shaped and symmetric, with stations clustering around the center. The mean (8.67) and median (8.64) are nearly identical, and the standard deviation is only 0.92. Taking the natural log compresses the long right tail and spreads out the clustered low values, which turns a skewed distribution into a roughly normal one. This is helpful for regression because it reduces the influence of extreme stations and makes relationships more linear.
+
+## Question 7
+
+Ridership against jobs within a half mile.
+
+```{r}
+#| label: q7-scatter
+ggplot(hrt, aes(x = jobs_halfmile, y = rider)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Heavy-rail ridership vs. nearby jobs",
+       x = "Jobs within a half mile", y = "Station ridership") + theme_minimal(base_family='roboto')
+
+cor(hrt$jobs_halfmile, hrt$rider, use = "complete.obs")
+```
+
+Ridership generally increases with the number of jobs within a half mile: the correlation is positive and moderate ($r = 0.60$), and the fitted line slopes upward. The relationship is noisy, though. Most stations are packed near the origin with few nearby jobs and low ridership, the spread of ridership grows as jobs increase, and a handful of outlying stations (for example, one with about 190,000 riders and another with about 150,000 jobs) pull the line. A linear relationship is therefore only a rough approximation. A straight line fits the many low-value stations poorly and is dominated by a few extreme points.
+
+## Question 8
+
+Same scatterplot with both variables in natural logs.
+
+```{r}
+#| label: q8-scatter-log
+ggplot(subset(hrt, rider > 0 & jobs_halfmile > 0),
+       aes(x = log(jobs_halfmile), y = log(rider))) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "ln(Jobs within a half mile)", y = "ln(Station ridership)") + theme_minimal(base_family='roboto')
+```
+
+```{r}
+#| label: q8-cor
+hrt_pj <- subset(hrt, rider > 0 & jobs_halfmile > 0)
+cor_log <- cor(log(hrt_pj$jobs_halfmile), log(hrt_pj$rider))
+cor_log
+```
+
+With both variables log-transformed, the relationship is positive and appears roughly linear ($r=0.53$). Compared with Question 7, the points now form a roughly even, elliptical cloud around the fitted line instead of being crowded into the lower-left corner. The scatter around the line is similar at low and high values, and no extreme outliers dominate the fit. A linear relationship is therefore much more reasonable here. The slope is also interpretable as an elasticity: a 1% increase in nearby jobs is associated with a roughly proportional percentage increase in ridership. Some scatter remains, which suggests other factors besides jobs matter.
+
+## Question 9
+
+Ridership as a function of population and jobs within a half mile, terminal status, and airport connection.
+
+```{r}
+#| label: q9-lm
+m1 <- lm(rider ~ pop_halfmile + jobs_halfmile + terminal_d + airport_d, data = hrt)
+summary(m1)
+```
+
+```{r}
+#| label: q9-helpers
+#| echo: false
+cf1 <- summary(m1)$coefficients
+dirn <- function(x) ifelse(x > 0, "positive", "negative")
+sig  <- function(tbl, v) paste0("p ", ifelse(tbl[v, 4] < 0.001, "< 0.001", paste0("= ", signif(tbl[v, 4], 2))),
+                                ifelse(tbl[v, 4] < 0.05, ", statistically significant", ", not statistically significant"),
+                                " at the 5% level")
+```
+
+The model explains 38.6% of the variation in station ridership (adjusted $R^2$ = 0.383). Holding the other variables constant, each coefficient is the change in average daily station ridership (riders) for a one-unit change in the predictor:
+
+- **Population within a half mile:** the relationship is positive. Each additional resident is associated with 0.22 additional daily riders, or about 220 more riders for every 1,000 additional residents ($p < 0.001$, statistically significant at the 5% level).
+- **Jobs within a half mile:** the relationship is positive. Each additional job is associated with 0.74 additional daily riders, or about 740 more riders for every 1,000 additional jobs ($p < 0.001$, statistically significant at the 5% level).
+- **Terminal station:** the relationship is positive. Terminal stations have on average 5767 more daily riders than non-terminal stations with the same population and jobs ($p < 0.001$, statistically significant at the 5% level).
+- **Airport connection:** the relationship is positive. Stations connecting to an airport have on average 680 more daily riders than other stations with the same population and jobs ($p = 0.87$, not statistically significant at the 5% level).
+
+The indicator coefficients are in riders and are not comparable in size with the per-person and per-job coefficients, because they are measured in different units. Population and jobs are the continuous predictors, so their effects scale with how many residents and jobs a station has nearby.
+
+## Question 10
+
+Predicted ridership for a station with 5,000 residents and 10,000 jobs within a half mile that is neither a terminal nor an airport station.
+
+```{r}
+#| label: q10-predict
+new_station <- data.frame(
+  pop_halfmile  = 5000,
+  jobs_halfmile = 10000,
+  terminal_d    = 0,
+  airport_d     = 0
+)
+
+pr <- predict(m1, newdata = new_station, interval = "prediction", level = 0.95)
+pr
+```
+
+```{r}
+#| echo: false
+b1 <- coef(m1)
+tm <- function(x, d) paste0(ifelse(x < 0, " - ", " + "), abs(round(x, d)))
+```
+
+The estimated regression equation is
+
+```{r}
+#| output: asis
+#| echo: false
+cat(glue::glue(r"---($$\widehat{\text{rider}} = <<round(b1[1], 1)>><<tm(b1["pop_halfmile"], 4)>>(\text{pop})<<tm(b1["jobs_halfmile"], 4)>>(\text{jobs})<<tm(b1["terminal_d"], 1)>>(\text{terminal})<<tm(b1["airport_d"], 1)>>(\text{airport}).$$)---", .open = "<<", .close = ">>"), "\n\n")
+```
+
+Substituting 5,000 residents, 10,000 jobs, and 0 for both indicators:
+
+```{r}
+#| output: asis
+#| echo: false
+cat(glue::glue(r"---($$\widehat{\text{rider}} = <<round(b1[1], 1)>><<tm(b1["pop_halfmile"], 4)>>(5000)<<tm(b1["jobs_halfmile"], 4)>>(10000)<<tm(b1["terminal_d"], 1)>>(0)<<tm(b1["airport_d"], 1)>>(0) \approx <<round(pr[1, "fit"])>>.$$)---", .open = "<<", .close = ">>"), "\n\n")
+```
+
+The model therefore predicts about 10,662 daily riders. The terminal and airport terms drop out because both indicators equal zero. The 95% prediction interval for an individual station like this runs from -10,892 to 32,215 riders, which is wide, so the prediction is imprecise. The lower bound is negative, which is impossible for ridership, a sign that a linear model in levels is not well suited to these data.
+
+## Question 11
+
+Predicted ridership against residuals for the linear model.
+
+```{r}
+#| label: q11-resid
+diag1 <- data.frame(fitted = fitted(m1), resid = resid(m1))
+
+ggplot(diag1, aes(x = fitted, y = resid)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Residuals vs. predicted ridership (linear model)",
+       x = "Predicted ridership", y = "Residual") + theme_minimal(base_family='roboto')
+```
+
+Since the residual vs. predicted values plot has a clear visual pattern (funnel-shape), there is visual evidence of heteroscedasticity. This indicates that the model performs better for stations with lower predicted ridership than for those with higher predicted ridership. At low predicted values the residuals are tightly packed near zero, while at higher predicted values they are much more spread out. The largest residuals are large positive values, meaning the model badly underpredicts a few busy stations. Because the errors are not constant, the standard errors and $p$-values from Question 9 are unreliable.
+
+If the model performed equally well across the full range of predicted ridership, the residuals would be scattered randomly around zero with roughly constant spread at every predicted value (homoscedastic), with no trend or curve.
+
+## Question 12
+
+Log-log model (indicators are not transformed), with its residual plot.
+
+```{r}
+#| label: q12-loglog
+hrt_log <- subset(hrt, rider > 0 & pop_halfmile > 0 & jobs_halfmile > 0)
+
+m_log <- lm(log(rider) ~ log(pop_halfmile) + log(jobs_halfmile) + terminal_d + airport_d,
+            data = hrt_log)
+summary(m_log)
+```
+
+```{r}
+#| label: q12-resid
+diag_log <- data.frame(fitted = fitted(m_log), resid = resid(m_log))
+
+ggplot(diag_log, aes(x = fitted, y = resid)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Residuals vs. predicted ln(ridership)",
+       x = "Predicted ln(ridership)", y = "Residual") + theme_minimal(base_family='roboto')
+```
+
+The output once again shows positive linear relationships between the predictors and the dependent variable, with all predictors besides `airport_d` being statistically significant.
+
+The residual vs predicted values plot for the new model does not have a clear visual pattern, showing homoscedasticity in the residuals.
+
+```{r}
+#| label: q12-compare
+cf2 <- summary(m_log)$coefficients
+round(cf2, 4)
+data.frame(model = c("Linear (Q9)", "Log-log (Q12)"),
+           n = c(nobs(m1), nobs(m_log)),
+           R2 = round(c(summary(m1)$r.squared, summary(m_log)$r.squared), 3),
+           adj_R2 = round(c(summary(m1)$adj.r.squared, summary(m_log)$adj.r.squared), 3))
+```
+
+**Coefficients.** In the linear model the coefficients are additive effects in riders. In the log-log model the coefficients on `log(pop_halfmile)` and `log(jobs_halfmile)` are elasticities: a 1% increase in nearby population is associated with a 0.09% change in ridership, and a 1% increase in nearby jobs with a 0.48% change, holding the other variables constant. The indicators are not logged, so they are multiplicative effects: terminal stations have about 59% higher ridership than non-terminal stations (p \< 0.001, statistically significant at the 5% level), and airport stations about 63% higher (p = 0.099, not statistically significant at the 5% level).
+
+**Fit.** The log-log model has an $R^2$ of 0.316 compared with 0.386 for the linear model. These $R^2$ values are measured on different dependent variables (ln ridership versus ridership), so they are only a rough comparison, and the residual standard errors cannot be compared directly at all.
+
+**Residuals.** The linear model's residuals fan out with predicted ridership (heteroscedasticity). The log-log residuals are evenly scattered around zero with roughly constant spread.
+
+**Conclusion.** The log-log specification is more appropriate. Its residuals meet the constant-variance assumption, so its standard errors and $p$-values can be trusted. It cannot predict negative ridership. It also matches the distributions we saw earlier (skewed ridership, roughly normal ln ridership, and a roughly linear relationship in logs), and its elasticity coefficients are easy to interpret. One limitation is that stations with zero ridership, population or jobs are dropped from this model, because their logs are undefined.
+
+## Question 13
+
+Adding a park-and-ride indicator to the log-log model.
+
+```{r}
+#| label: q13-parking
+# Use the same stations in both models so they can be compared
+hrt_log2 <- subset(hrt_log, !is.na(parking_d))
+m_log_b  <- update(m_log, data = hrt_log2)
+m_log2 <- lm(log(rider) ~ log(pop_halfmile) + log(jobs_halfmile) +
+               terminal_d + airport_d + parking_d,
+             data = hrt_log2)
+summary(m_log2)
+```
+
+```{r}
+#| label: q13-compare
+anova(m_log_b, m_log2)
+AIC(m_log_b, m_log2)
+
+cf_a <- summary(m_log_b)$coefficients
+cf_b <- summary(m_log2)$coefficients
+vars <- rownames(cf_a)
+data.frame(variable = vars,
+           without_parking = round(cf_a[vars, 1], 3),
+           with_parking    = round(cf_b[vars, 1], 3),
+           pct_change      = round(100 * (cf_b[vars, 1] - cf_a[vars, 1]) / abs(cf_a[vars, 1]), 1))
+```
+
+```{r}
+#| label: q13-vals
+bp   <- cf_b["parking_d", 1]
+pp   <- cf_b["parking_d", 4]
+dAIC <- AIC(m_log_b) - AIC(m_log2)
+pF   <- anova(m_log_b, m_log2)$`Pr(>F)`[2]
+```
+
+**Interpretation.** The coefficient on `parking_d` is -0.0045. Because the dependent variable is ln(ridership) and the indicator is not logged, stations with park-and-ride facilities have about 0.5% lower ridership than stations without, holding population, jobs, terminal and airport status constant. That is effectively zero.
+
+**Significance and reasonableness.** The coefficient is not statistically significant ($p = 0.95$), and its 95% confidence interval runs from about -0.14 to +0.13 (about -13% to +14% in ridership). We therefore find no evidence that park-and-ride facilities are associated with ridership once population, jobs, terminal and airport status are controlled for. A positive effect would have been plausible, since parking lets a station draw riders from beyond the half-mile catchment. The estimate may be near zero because the population and jobs measures already capture much of what differs between stations, or because park-and-ride stations tend to be in lower-density areas that offset any boost from parking. The sign is not meaningful given how close to zero the estimate is.
+
+**Effect on other coefficients.** Adding the indicator barely changes the other estimates. The largest change in any coefficient is 0.4% (the intercept moves from 4.029 to 4.036, and the population, jobs, terminal and airport coefficients change by 0.2% or less), and no signs flip.
+
+**Model fit.** Fit does not improve. Adjusted $R^2$ falls slightly from 0.3124 to 0.3115, the F-test comparing the nested models gives $p = 0.95$, and AIC increases from 1921.8 to 1923.8 (higher is worse). The park-and-ride indicator does not meaningfully improve the model, so the simpler model from Question 12 is preferred.

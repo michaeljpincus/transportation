@@ -1,0 +1,4 @@
+"0","ggplot(hh) + "
+"0","  geom_histogram(aes(x=TOT_VEH), bins=15, fill='darkseagreen') + "
+"0","  theme_minimal(base_family='jakarta') + "
+"0","  labs(x='Total Vehicles', y='Count', title='Histogram of Total Vehicles')"

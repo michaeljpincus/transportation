@@ -1,0 +1,4 @@
+"0","#| label: q1-hist"
+"0","ggplot(per) +"
+"0","  geom_histogram(aes(x = P_TOT_TRIPS), bins = 15, fill='steelblue') +"
+"0","  theme_minimal(base_family='roboto')"

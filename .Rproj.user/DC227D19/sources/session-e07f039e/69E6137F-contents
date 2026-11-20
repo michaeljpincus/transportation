@@ -1,0 +1,337 @@
+---
+title: "Assignment 6"
+author: "Michael Pincus"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(readxl)
+library(ggplot2)
+library(showtext)
+
+font_add_google(name = "Roboto", family = "roboto")
+showtext_auto()
+```
+
+## Data
+
+```{r}
+#| label: load-survey
+hh   <- readr::read_csv("Household travel survey/1_Household_Public.csv",
+                        locale = readr::locale(encoding = "latin1"))
+per  <- readr::read_csv("Household travel survey/2_Person_Public.csv",
+                        locale = readr::locale(encoding = "latin1"))
+veh  <- readr::read_csv("Household travel survey/3_Vehicle_Public.csv",
+                        locale = readr::locale(encoding = "latin1"))
+trip <- readr::read_csv("Household travel survey/4_Trip_Public.csv",
+                        locale = readr::locale(encoding = "latin1"))
+
+hh_dict   <- read_excel("dd.xlsx", sheet = "1 Household")
+per_dict  <- read_excel("dd.xlsx", sheet = "2 Person")
+veh_dict  <- read_excel("dd.xlsx", sheet = "3 Vehicle")
+trip_dict <- read_excel("dd.xlsx", sheet = "4 Trip")
+```
+
+# Household Travel Survey
+
+## Question 1
+
+```{r}
+#| label: q1-hist
+ggplot(per) +
+  geom_histogram(aes(x = P_TOT_TRIPS), bins = 15, fill='steelblue') +
+  theme_minimal(base_family='roboto')
+```
+
+The distribution of the number of trips people made is right-skewed; from visual analysis alone, most people took 1-5 trips, while fewer people took more than 5 trips. A log transformation may be beneficial for a regression model.
+
+## Question 2
+
+```{r}
+#| label: q2-indicator
+# 1 = no trips, 0 = at least one trip
+per$no_trips <- ifelse(per$P_TOT_TRIPS == 0, 1, 0)
+
+sum(per$no_trips, na.rm = TRUE)    # number of people with no trips
+table(per$no_trips)                # counts for both groups
+prop.table(table(per$no_trips))    # shares
+```
+
+In the sample, 3,625 people took no trips, about 18% of those sampled.
+
+```{r}
+#| label: q2-recode
+# Recode "don't know" / "refused" codes to NA
+per <- per %>%
+  mutate(
+    AGECAT = ifelse(AGECAT %in% c(98, 99), NA, AGECAT),
+    RACE   = ifelse(RACE   %in% c(98, 99, 988), NA, RACE)
+  )
+
+# Readable labels
+per <- per %>%
+  mutate(
+    RACE_lab = factor(RACE,
+                      levels = c(1, 2, 3, 4, 5, 6, 97, 100),
+                      labels = c("White", "Black", "Hispanic/Latino",
+                                 "Am. Indian/Alaska Native", "Asian",
+                                 "Pacific Islander", "Other", "Multi-race")),
+    AGE_lab = factor(AGECAT, levels = 1:12,
+                     labels = c("<=5", "6-12", "13-15", "16-17", "18-24", "25-34",
+                                "35-44", "45-54", "55-64", "65-74", "75-85", "86+"))
+  )
+```
+
+Column percentages (the share of each group falling in each category):
+
+```{r}
+#| label: q2-race-age
+round(prop.table(table(per$RACE_lab, per$no_trips), margin = 2), 3)
+round(prop.table(table(per$AGE_lab,  per$no_trips), margin = 2), 3)
+```
+
+84% of those taking no trips were white, followed by 10% black, and 2% Asian.
+
+87% of those taking trips were white, followed by 7% black and 2% Asian.
+
+The largest share of people taking no trips at 19% of all sampled were in the 65-74 category, followed by 17% in the 55-64 category and 14% in the 75-85 category. The largest share of people taking trips at 21% of all those sampled were in the 55-64 category, followed by 16% in the 45-54 category and 15% in the 65-74 category.
+
+Income comes from the household table:
+
+```{r}
+#| label: q2-income
+per <- per %>% left_join(hh %>% select(HH_ID, INCOME), by = "HH_ID")
+round(prop.table(table(per$INCOME, per$no_trips), margin = 2), 3)
+```
+
+The income group that had the largest share of people taking no trips were those in households making \$50-\$74K at 17%, followed by those in households making \$100K-\$149K at 15%, and those in households making \$75K-\$99K at 12.3%.
+
+The income group that had the largest share of people taking trips were those in households making \$100-\$149K at 20%, followed by those in households making \$75-\$99K at 16% , and those in households making \$50-\$74K at 15%.
+
+## Question 3=Percentage of people who did not travel, by the reason they reported.
+
+```{r}
+#| label: q3-whyno
+whyno_labels <- c(
+  "1"  = "Personally sick",
+  "2"  = "Vacation or personal day",
+  "3"  = "Caretaking sick kids",
+  "4"  = "Caretaking sick other",
+  "5"  = "Homebound elderly or disabled",
+  "6"  = "Worked at home for pay",
+  "7"  = "Not scheduled to work",
+  "8"  = "Worked around home (not for pay)",
+  "9"  = "No transportation available",
+  "10" = "Out of Delaware Valley region",
+  "11" = "Weather",
+  "12" = "No reason to travel",
+  "97" = "Other",
+  "98" = "Don't know",
+  "99" = "Refused"
+)
+
+# One record per person who did not travel
+no_travel <- trip %>%
+  filter(TRIP_NUM == 0) %>%
+  distinct(PERSON_ID, .keep_all = TRUE)
+
+# Unweighted: share of non-travelers giving each reason
+why_tbl <- no_travel %>%
+  mutate(Reason = factor(WHYNO,
+                         levels = as.numeric(names(whyno_labels)),
+                         labels = whyno_labels)) %>%
+  count(Reason, name = "People") %>%
+  mutate(Percent = round(100 * People / sum(People), 1)) %>%
+  arrange(desc(People))
+
+knitr::kable(why_tbl, caption = "Reasons for making no trips")
+```
+
+The five most common reasons for not taking trips (not including the Refused category) are 1) No reason to travel, 2) Personally sick, 3) Worked around home (no pay), 4) Homebound elderly or disabled, and 5) Weather.
+
+## Question 4
+
+*Written response here.*
+
+## Question 5
+
+*Written response here.*
+
+# Station-Level Ridership
+
+```{r}
+#| label: station-data
+df  <- read.csv("data.csv")
+hrt <- subset(df, hrt_d == 1)   # heavy-rail stations only
+```
+
+## Question 6
+
+Histograms of heavy-rail station ridership and its natural log.
+
+```{r}
+#| label: q6-hist
+#| fig-width: 7
+#| fig-height: 4
+hrt_pos <- subset(hrt, rider > 0)
+hrt_pos$ln_rider <- log(hrt_pos$rider)
+
+ggplot(hrt_pos, aes(rider)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  labs(title = "Heavy-rail station ridership", x = "Ridership", y = "Stations") + theme_minimal(base_family='roboto') 
+
+ggplot(hrt_pos, aes(ln_rider)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  labs(title = "Natural log of heavy-rail station ridership",
+       x = "ln(Ridership)", y = "Stations") + theme_minimal(base_family='roboto') 
+```
+
+```{r}
+#| label: q6-summary
+summary(hrt_pos$rider);    sd(hrt_pos$rider)
+summary(hrt_pos$ln_rider); sd(hrt_pos$ln_rider)
+```
+
+The first distribution of heavy-rail station ridership is right-skewed, meaning that most of the data falls in lower values. The second distribution of the natural log of heavy-rail station ridership is roughly normally distributed, with data clustering around the central mean. Taking the natural log of ridership transforms the data (a "log-transformation") from a skewed distribution into a natural distribution.
+
+## Question 7
+
+Ridership against jobs within a half mile.
+
+```{r}
+#| label: q7-scatter
+ggplot(hrt, aes(x = jobs_halfmile, y = rider)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Heavy-rail ridership vs. nearby jobs",
+       x = "Jobs within a half mile", y = "Station ridership") + theme_minimal(base_family='roboto')
+
+cor(hrt$jobs_halfmile, hrt$rider, use = "complete.obs")
+```
+
+Despite the computer drawing a line with the `geom_smooth()` command, a linear relationship does not appear to be appropriate, due to the data being heavily skewed. There is no clear pattern based on visual analysis of this plot alone.
+
+## Question 8
+
+Same scatterplot with both variables in natural logs.
+
+```{r}
+#| label: q8-scatter-log
+ggplot(subset(hrt, rider > 0 & jobs_halfmile > 0),
+       aes(x = log(jobs_halfmile), y = log(rider))) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "ln(Jobs within a half mile)", y = "ln(Station ridership)") + theme_minimal(base_family='roboto')
+```
+
+With both station ridership and jobs within a half mile being log-transformed, the linear relationship is much more clear and appears to be appropriate based on visual analysis of the scatterplot.
+
+## Question 9
+
+Ridership as a function of population and jobs within a half mile, terminal status, and airport connection.
+
+```{r}
+#| label: q9-lm
+m1 <- lm(rider ~ pop_halfmile + jobs_halfmile + terminal_d + airport_d, data = hrt)
+summary(m1)
+```
+
+In this OLS regression model, the predictors all have a positive linear association. That is, for each one-unit increase in the predictor, the dependent variable increases by 1. All predictors besides `airport_d` are statistically significant. The predictor with the largest magnitude is `terminal_d`, followed by `airport_d`, `jobs_halfmile` and `pop_halfmile`.
+
+## Question 10
+
+Predicted ridership for a station with 5,000 residents and 10,000 jobs within a half mile that is neither a terminal nor an airport station.
+
+```{r}
+#| label: q10-predict
+new_station <- data.frame(
+  pop_halfmile  = 5000,
+  jobs_halfmile = 10000,
+  terminal_d    = 0,
+  airport_d     = 0
+)
+
+predict(m1, newdata = new_station, interval = "prediction", level = 0.95)
+```
+
+*Your answer here.*
+
+## Question 11
+
+Predicted ridership against residuals for the linear model.
+
+```{r}
+#| label: q11-resid
+diag1 <- data.frame(fitted = fitted(m1), resid = resid(m1))
+
+ggplot(diag1, aes(x = fitted, y = resid)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Residuals vs. predicted ridership (linear model)",
+       x = "Predicted ridership", y = "Residual") + theme_minimal(base_family='roboto')
+```
+
+Since the residual vs. predicted values plot has a clear visual pattern (funnel-shape), there is visual evidence of heteroscedasticity. This indicates that the model performs better in predicting situations resulting lower ridership.
+
+If the model performed well on the full range of predicted values, the plot would have no visual pattern (i.e., it would be homoscedastic).
+
+## Question 12
+
+Log-log model (indicators are not transformed), with its residual plot and the same prediction.
+
+```{r}
+#| label: q12-loglog
+hrt_log <- subset(hrt, rider > 0 & pop_halfmile > 0 & jobs_halfmile > 0)
+
+m_log <- lm(log(rider) ~ log(pop_halfmile) + log(jobs_halfmile) + terminal_d + airport_d,
+            data = hrt_log)
+summary(m_log)
+```
+
+```{r}
+#| label: q12-resid
+diag_log <- data.frame(fitted = fitted(m_log), resid = resid(m_log))
+
+ggplot(diag_log, aes(x = fitted, y = resid)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Residuals vs. predicted ln(ridership)",
+       x = "Predicted ln(ridership)", y = "Residual") + theme_minimal(base_family='roboto')
+```
+
+The output once again shows positive linear relationships between the predictors and the dependent variable, with all predictors besides `airport_d` being statistically significant.
+
+The residual vs predicted values plot for the new model does not have a clear visual pattern, showing homoscedasticity in the residuals.
+
+*Your answer here - which model appears to be more appropriate, and why?*
+
+## Question 13
+
+Adding a park-and-ride indicator to the log-log model.
+
+```{r}
+#| label: q13-parking
+m_log2 <- lm(log(rider) ~ log(pop_halfmile) + log(jobs_halfmile) +
+               terminal_d + airport_d + parking_d,
+             data = hrt_log)
+summary(m_log2)
+```
+
+```{r}
+#| label: q13-compare
+anova(m_log, m_log2)
+AIC(m_log, m_log2)
+```
+
+*Your answer here*

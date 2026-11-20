@@ -1,0 +1,8 @@
+"0",""
+"0","cf_a <- summary(m_log_b)$coefficients"
+"0","cf_b <- summary(m_log2)$coefficients"
+"0","vars <- rownames(cf_a)"
+"0","data.frame(variable = vars,"
+"0","           without_parking = round(cf_a[vars, 1], 3),"
+"0","           with_parking    = round(cf_b[vars, 1], 3),"
+"0","           pct_change      = round(100 * (cf_b[vars, 1] - cf_a[vars, 1]) / abs(cf_a[vars, 1]), 1))"

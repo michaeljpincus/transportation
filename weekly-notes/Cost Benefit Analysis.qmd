@@ -1,0 +1,239 @@
+---
+title: "Cost Benefit Analysis for Transportation"
+format: html
+editor: visual
+---
+
+# Cost-Benefit Analysis for Transportation
+
+A general framework for evaluating a project or policy's costs and benefits to society: is society better off? By how much? What is society? What is better off?
+
+## When to do CBA?
+
+Public investment or regulation (public investments in transportation)
+
+When to make public investment?
+
+- Private sector won't provide or provides non-optimal amount
+
+  - Monopoly (MC\<AC)
+
+  - External costs or benefits not factored into investment or consumption decisions
+
+- Something we care about financing or regulating but want to create as much economic benefit and as little harm as possible (e.g., para-transit services)
+
+### Costs and Benefits
+
+**Costs:**
+
+- Initial investment
+
+- Ongoing operating costs
+
+- External costs (environmental, social, public health)
+
+**Benefits:**
+
+- Consumer benefits (willingness to pay)
+
+- External benefits (second best pricing, social)
+
+- Employment (marginal effect on unemployment)
+
+If you can't monetize, quantify
+
+If you can't quantify, list costs and benefits
+
+## Cost-Benefit Analysis Equation
+
+$$
+\text{NPV} = \sum_{t=o}^n\frac{\text{FV}_t}{(1+i)^t}
+$$
+
+$\text{NPV}$ = Net present value
+
+$\text{FV}$ = Future value
+
+$i$ = a discount rate representing the time value of money
+
+$t$ = the time period in the future
+
+$n$ = the effective life on investment or policy
+
+$$
+$0.91 = \sum^1_{t=0} \frac{$1}{(1+0.1)^1}
+$$
+
+What is the present value of \$1 in two years if the discount rate is 0.1?
+
+## Measuring Costs
+
+Direct costs are generally straightforward
+
+Other costs (harder to measure, but important):
+
+- Road delays
+
+- Social impacts (such as dividing a neighborhood)
+
+- Environmental impacts
+
+- Tax and market discounts
+
+In transportation, benefits are less straightforward than costs.
+
+Primary benefit: consumer surplus
+
+- Time savings x value of time
+
+- Willingness to pay
+
+Other benefits (harder to measure):
+
+- Congestion reduction (sometimes)
+
+- Second best pricing
+
+- Public health benefits
+
+## Lab
+
+We build a new road. In year 0, it costs \$100,000,000 to build. It opens one year
+
+1.  Assuming a discount rate of $0.10$, what is the economic net present value of the project after 10 years?
+
+|         | 0           | 1         | 2         | 3         |
+|---------|-------------|-----------|-----------|-----------|
+| Cost    | 100 million | 1 million | 1 million | 1 million |
+| Benefit | 0           | 5 million | 5 million | 5 million |
+
+$$
+\text{NPV} = \frac{$4{,}000{,}000}{(1+0.1)^1}+\frac{$4{,}000,000}{(1+0.1)^2}+\frac{$4{,}000{,}000}{(1+0.1)^3} + \dots +  \frac{$4{,}000{,}000}{(1+0.1)^n}
+$$
+
+```{r}
+npv_road <- function(i, n) {
+  cost    <- 100e6
+  benefit <- 5e6
+  opex    <- 1e6
+  
+  t  <- 0:n
+  FV <- c(-cost, rep(benefit - opex, n))
+  sum(FV / (1 + i)^t)
+}
+```
+
+```{r}
+npv_road(i=0.10, n=10)
+npv_road(i=0.10, n=30)
+npv_road(i=0.05, n=30)
+npv_road(i=0.01, n=30)
+```
+
+```{r}
+# What about in 100 years from now? 
+npv_road(i=0.1, n=100)
+```
+
+#### Part B:
+
+```{r}
+npv_road(i=0.8, n=30)
+```
+
+## CBA Lecture 2
+
+### Willingness to pay
+
+**USE VALUES:** The amount that people are willing to pay for the service (i.e., toll or fare they are willing to pay to use the highway or train)
+
+$$
+\text{Time savings} * \text{value of time}
+$$
+
+Both can be estimated from observed behavior.
+
+**NON-USE VALUE:** Harder to quantify. Total willingness to pay to be in a city with a train system independent of use. Value of having clear skies (independent of health effects)
+
+### Comparing qualitative values
+
+If monetization is not possible, determine whether it is possible to quantify
+
+If quantification is not possible, provide a qualitative description
+
+Conduct CBA using monetized costs and benefits
+
+Decision maker can then use resulting NPV as a critical value for non-monetized costs and benefits
+
+### Red flags
+
+**EMPLOYMENT BENEFITS:**
+
+Sometimes all work is listed as a benefit. If this is the case, then paying people to dig holes breaks even.
+
+**OVERLY OPTIMISITIC:**
+
+Are cost and ridership projections realistic?
+
+Just because a project doesn't make sense economically, doesn't mean it won't make sense politically
+
+**PECUNIARY IMPACTS:**
+
+Lower prices help consumers but hurt producers. Net wash
+
+**SECONDARY EFFECTS:**
+
+A project introduces money into the economy which then gets spent throughout it (the multiplier effect), but this would have happened no matter how the money was spent.
+
+**DOUBLE COUNTING LAND VALUES:**
+
+Transportation infrastructure often increases the value of the land around it. This, however, is a capitalization of the direct benefits (of increased accessibility) and is already counted as a direct benefit. Agglomeration benefits are an exception to this.
+
+**GENERAL TIPS:**
+
+1.  Ask yourself: if this were an investment in a school rather than transportation infrastructure, would this benefit be similar? If yes, it is probably not an economic benefits.
+2.  Ask yourself: is this clearly a benefit related to accessibility or mobility? If yes, and you have already directly accounted for accessibility or mobility, the benefit is likely already included and you should avoid double counting.
+
+### Uncertainty and risk
+
+How likely is it that things will go as planned?
+
+**IDENTIFY RISKS:**
+
+What are the potential sources of uncertainty and risk? Construction time? Ridership? Costs?
+
+**ANALYZE IMPLICATIONS:**
+
+How does the CBA look under different assumptions?
+
+**REVALUE:**
+
+Apply probabilities to various outcomes and make a probability-weighted assessment.
+
+**RISK VS. REWARD:**
+
+Or, just increase your discount rate. The traditional market response to higher risk is to demand higher reward.
+
+### Lab 2 (10.6)
+
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+
+| Economic Costs                         | Economic Benefits                                                                                                               |
++========================================+=================================================================================================================================+
+| Investment (\$100,000,000 total)       | Travel time savings (\$5,000,000 + 1.07/year)                                                                                   |
+|                                        |                                                                                                                                 |
+| Construction delay (\$5,000,000 total) | ~~Regional multiplier effect (Each dollar spent on project leads to another 25 cents spent on secondary parts of the economy)~~ |
+|                                        |                                                                                                                                 |
+| Operating cost (\$1 x 1.04/year)       | ~~Real estate investment (\$200,000,000 total)~~                                                                                |
+|                                        |                                                                                                                                 |
+| Environmental cost (\$500,000/year)    | ~~Local jobs (\$50,000,000 total)~~                                                                                             |
+|                                        |                                                                                                                                 |
+| Disconnecting low-income neighborhood  |                                                                                                                                 |
+|                                        |                                                                                                                                 |
+| Views                                  |                                                                                                                                 |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------+
+
+The **regional multiplier effect** measures something completely different than the highway CBA.
+
+The **real estate investment** is caused by travel time savings, so it is double counting.
+
+**Local jobs** are not included because labor is a cost, and workers have opportunity costs to work somewhere else.

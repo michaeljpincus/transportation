@@ -1,0 +1,109 @@
+---
+title: "Household Travel Survey"
+format: html
+editor: visual
+---
+
+```{r}
+library(showtext)
+font_add_google("Plus Jakarta Sans", "jakarta")
+showtext_auto()
+```
+
+```{r}
+hh <- readr::read_csv("Household travel survey/1_Household_Public.csv", locale = readr::locale(encoding = "latin1"))
+
+per <- readr::read_csv("Household travel survey/2_Person_Public.csv", locale = readr::locale(encoding = "latin1"))
+
+veh <- readr::read_csv("Household travel survey/3_Vehicle_Public.csv", locale = readr::locale(encoding = "latin1"))
+
+trip <- readr::read_csv("Household travel survey/4_Trip_Public.csv", locale = readr::locale(encoding = "latin1"))
+```
+
+```{r}
+dim(hh)
+```
+
+```{r}
+colnames(hh)
+```
+
+Below we can see the count of households with 0, 1, 2, etc. vehicles
+
+```{r}
+table(hh$TOT_VEH)
+```
+
+Getting the percentages:
+
+```{r}
+table(hh$TOT_VEH)/length(hh$TOT_VEH)
+```
+
+Let's round these numbers to make them readable:
+
+```{r}
+round(table(hh$TOT_VEH)/length(hh$TOT_VEH)*100, digits=3)
+```
+
+Passing two arguments creates a two-dimensional table of the number of households by the number of cars and hhousehold income.
+
+```{r}
+table(hh$TOT_VEH[hh$INCOME < 97], hh$INCOME[hh$INCOME < 97])
+```
+
+```{r}
+ggplot(hh) + 
+  geom_histogram(aes(x=TOT_VEH), bins=15, fill='darkseagreen') + 
+  theme_minimal(base_family='jakarta') + 
+  labs(x='Total Vehicles', y='Count', title='Histogram of Total Vehicles')
+```
+
+```{r}
+ggplot(hh) + 
+  geom_density(aes(x=TOT_VEH), fill='darkseagreen', alpha=0.8, color=NA) + 
+  theme_minimal(base_family='jakarta') + 
+  labs(x='Total Vehicles', y='Count', title='Density of Total Vehicles')
+```
+
+```{r}
+table(hh$INCOME)
+```
+
+```{r}
+hh |> 
+  filter(INCOME<98) |> 
+  ggplot(aes(x=INCOME)) + 
+  geom_histogram(bins=15, fill='darkseagreen') + 
+  theme_minimal(base_family='jakarta') + 
+  labs(x='Income', y='Count', title='Histogram of Income')
+```
+
+```{r}
+# Just data on person 3 
+
+library(tidyverse)
+
+per3 <- trip |> 
+  filter(PERSON_ID == 10020601)
+
+arrivedep <- per3 |> 
+  select(ARRIVE, DEPART, O_LOC_TYPE, D_LOC_TYPE)
+
+arrivedep <- arrivedep |> 
+  mutate(o_label = case_when(
+    O_LOC_TYPE == 1 ~ 'Home', 
+    O_LOC_TYPE == 2 ~ 'Work',
+    O_LOC_TYPE == 3 ~ 'School',
+    O_LOC_TYPE == 4 ~ 'Other'
+  ), d_label = case_when(
+    D_LOC_TYPE == 1 ~ 'Home', 
+    D_LOC_TYPE == 2 ~ 'Work',
+    D_LOC_TYPE == 3 ~ 'School',
+    D_LOC_TYPE == 4 ~ 'Other'
+  ))
+
+arrivedep <- arrivedep |> 
+  select(ARRIVE, DEPART, o_label, d_label)
+
+```

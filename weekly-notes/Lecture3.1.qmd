@@ -1,0 +1,179 @@
+---
+title: "Lecture 3.1"
+format: html
+date: '09-08-2026'
+editor: visual
+---
+
+# Elasticities and Interpreting Regression for Transportation
+
+## Gomez-Ibañez Reading
+
+Transportation economics is not as complicated as people think, **we should price as close to marginal cost as possible**
+
+$$\text{Net economic benefits} = \text{total consumer benefits} - \text{entire production cost}$$
+
+Under a certain amount of conditions, marginal cost maximizes net economic benefits.
+
+### Author makes a few assumptions:
+
+1.  Income distribution is just or irrelevant (X)
+2.  Consumer is the best judge of their own welfare (good)
+3.  No non-monetary externalities (X)
+4.  All substitutes and compliments are priced appropriately
+
+## Supply and Demand
+
+As price goes down, more people are taking the train. At a certain price, no one will take the train.
+
+As the price is really low, the train operator will run as few trains as possible. If the train operator is making a lot of money, they will run a lot more trains.
+
+### Elasticity of Demand
+
+The change in consumption expected from th change in income or price. **How much does demand change based on another thing?**
+
+- **Income elasticity of demand:**
+
+  - Income increases and so does average household car ownership
+
+- **Own-price elasticity of demand:**
+
+  - Car prices decreases so car purchases increase
+
+- **Cross-price elasticity of demand:**
+
+  - Transit fares increase so car-use increases
+
+Measuring elasticity:
+
+$$\text{Elasticity} = \frac{\%\text{ change in quantity}}{\%\text{ change in price (or income)}} = \frac{\%\Delta Q}{\%\Delta P}$$
+
+Elastic Demand: Demand is sensitive to price changes
+
+- Transit fares go up by 100%, transit ridership goes down by only 30%
+
+Inelastic Demand: Demand is **not** sensitive to price changes
+
+- Fuel prices decrease by 10%, VMT increases by 12.5%
+
+## Interpreting Linear Regression
+
+Standard linear regression formula:
+
+$$y = \beta_0 + \beta_1 x_1 + \beta_2 x _2 + \epsilon $$
+
+For example:
+
+$$\text{VMT} = \text{constant} + (\text{fuel price}\times-0.5) + (\text{population density} \times -0.3)$$
+
+## Lab 3.1
+
+Clear objects from memory:
+
+```{r}
+rm(list=ls())
+```
+
+Let's generate supply and demand functions for daily VMT per capita in a theoretical monocentric city.
+
+Cost of travel is 0-300 cents per VMT:
+
+```{r}
+price <- 0:300
+```
+
+VMT supplied (willingness to provide all inputs):
+
+```{r}
+qs <- price*(2/30)
+```
+
+Plotting price against VMT supply:
+
+```{r}
+plot(qs, price)
+```
+
+Demand also depends on price:
+
+```{r}
+qd <- 20 - price * 1.8/30
+```
+
+Comparing our plots:
+
+```{r}
+plot(qs, price)
+lines(qd, price)
+```
+
+Now, let's solve for equilibrium between the two equations – where do they meet? At equilibrium qs = qd:
+
+```{r}
+p_eq <- 600/3.8 
+print(p_eq)
+```
+
+We will add a 22 cent external cost:
+
+```{r}
+sc <- (price-22)*2/30
+plot(qs, price)
+lines(qd, price)
+lines(sc, price)
+```
+
+```{r}
+###let's turn our objects into a single dataset and learn to look at them
+cbind(price,qd,qs,sc)
+
+dat <-as.data.frame(cbind(price,qd,qs,sc))
+
+##remove unused objects
+rm(price,qd,qs,sc)
+
+#look at data
+head(dat)
+summary(dat)
+str(dat)
+```
+
+#### Econometrics in a nutshell
+
+```{r}
+df <- lm(qd ~ price, dat)
+summary(df)
+```
+
+```{r}
+sf <- lm(qs ~ price, dat)
+summary(sf)
+```
+
+```{r}
+plot(dat$qs, dat$price, t="line")
+lines(dat$qd, dat$price)
+lines(dat$sc, dat$price)
+
+plot(dat$qs, dat$price, t="line", col=2, xlab="Average daily VMT per capita", 
+     ylab = "Price per VMT in cents",
+     main = "Price, social cost, and VMT")
+
+lines(dat$qd, dat$price, col=4)
+lines(dat$sc, dat$price, lty=2, col=2)
+```
+
+```{r}
+library(ggplot2)
+
+graph <- ggplot(dat, aes(y=price)) +
+  geom_line(aes(x = qd, colour = "Demand")) + 
+  geom_line(aes(x = qs, colour = "Supply")) +
+  geom_line(aes(x = sc, colour = "Social Cost")) +
+  theme_bw() + 
+  labs(x = 'VMT')
+
+graph 
+
+graph + theme(legend.title=element_blank())
+```
